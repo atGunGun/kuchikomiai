@@ -20,9 +20,10 @@ Route::get('/', [App\Http\Controllers\PublicNoticeController::class, 'top'])->na
 // ※元の '/' と被らないように '/form' に変更しました
 Route::get('/form', [ReviewController::class, 'showForm'])->name('review.index'); 
 Route::post('/generate', [ReviewController::class, 'generate'])->name('review.generate');
-
 // ※店舗ごとの専用QRコード読み込み用
 Route::get('/review/{id}', [ReviewController::class, 'showReviewForm'])->name('review.show');
+// ★追加：コピーやGoogle遷移をカウントするAPIルート
+Route::post('/review/{id}/track', [ReviewController::class, 'track'])->name('review.track');
 
 // ③ ログインしている人（企業・代理店・運営）専用の安全なエリア
 Route::middleware(['auth', 'verified'])->group(function () {

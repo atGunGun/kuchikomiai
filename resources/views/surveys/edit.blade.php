@@ -69,7 +69,7 @@
                                 </div>
                                 
                                 <div id="options-container-{{ $index }}" class="mt-4 p-4 bg-green-50 rounded-xl {{ in_array($question->type, ['checkbox', 'radio']) ? '' : 'hidden' }}">
-                                    <label class="block mb-2 text-xs font-bold text-green-700 uppercase">選択肢</label>
+                                    <label class="block mb-2 text-xs font-bold text-brand uppercase">選択肢</label>
                                     <div id="options-list-{{ $index }}" class="space-y-2 mb-3">
                                         @if(is_array($question->options))
                                             @foreach($question->options as $option)
@@ -140,7 +140,7 @@
                         </div>
                     </div>
                     <div id="options-container-${qCount}" class="mt-4 p-4 bg-green-50 rounded-xl hidden">
-                        <label class="block mb-2 text-xs font-bold text-green-700 uppercase">選択肢</label>
+                        <label class="block mb-2 text-xs font-bold text-brand uppercase">選択肢</label>
                         <div id="options-list-${qCount}" class="space-y-2 mb-3"></div>
                         <button type="button" onclick="addOption(${qCount})" class="text-xs font-bold text-green-600 bg-white border border-green-200 px-3 py-1.5 rounded-lg hover:bg-green-100 transition-colors">＋ 選択肢を追加</button>
                     </div>

@@ -23,11 +23,11 @@
                 <div class="space-y-5">
                     <div>
                         <label class="block mb-2 text-sm font-bold text-gray-700">アンケートタイトル <span class="text-red-500">*</span></label>
-                        <input type="text" name="title" required class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-green-500 focus:border-green-500 block w-full p-3 outline-none transition-all" placeholder="例：接客・料理に関するアンケート">
+                        <input type="text" name="title" required class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus-brand block w-full p-3 outline-none transition-all" placeholder="例：接客・料理に関するアンケート">
                     </div>
                     <div>
                         <label class="block mb-2 text-sm font-bold text-gray-700">お客様へのメッセージ（説明文）</label>
-                        <textarea name="description" rows="2" class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-green-500 focus:border-green-500 block w-full p-3 outline-none transition-all" placeholder="例：お店の感想をお聞かせください。AIが素敵な口コミを作成します。"></textarea>
+                        <textarea name="description" rows="2" class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus-brand block w-full p-3 outline-none transition-all" placeholder="例：お店の感想をお聞かせください。AIが素敵な口コミを作成します。"></textarea>
                     </div>
                 </div>
             </div>
@@ -93,7 +93,7 @@
                     </div>
 
                     <div id="options-container-${qCount}" class="mt-4 p-4 bg-green-50 rounded-xl hidden">
-                        <label class="block mb-2 text-xs font-bold text-green-700 uppercase">選択肢</label>
+                        <label class="block mb-2 text-xs font-bold text-brand uppercase">選択肢</label>
                         <div id="options-list-${qCount}" class="space-y-2 mb-3">
                             <div class="flex items-center gap-2">
                                 <input type="text" name="questions[${qCount}][options][]" class="bg-white border border-green-200 text-sm rounded-lg focus:ring-green-500 block w-full p-2" placeholder="選択肢を入力">

@@ -1,14 +1,13 @@
 <x-app-layout>
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+
     <div class="max-w-3xl mx-auto space-y-6">
         
         <div>
             <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
                 <span class="text-2xl">⚙️</span> 店舗設定
             </h1>
-            <p class="text-gray-500 mt-1">店舗の基本情報を変更できます。</p>
-            <p class="text-sm text-green-600 font-medium mt-2 bg-green-50 inline-block px-3 py-1 rounded-lg border border-green-100">
-                💡 アンケートの設問設定は「アンケート管理」メニューから行えるようになりました！
-            </p>
+            <p class="text-gray-500 mt-1">店舗の基本情報や、アンケート画面の案内文をカスタマイズできます。</p>
         </div>
 
         @if(session('success'))
@@ -18,34 +17,73 @@
             </div>
         @endif
 
-        <form action="{{ url('/settings') }}" method="POST">
+        <form action="{{ url('/settings') }}" method="POST" enctype="multipart/form-data" id="settings-form">
             @csrf
             
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                <h2 class="text-lg font-bold text-gray-800 mb-6 border-b pb-4">基本情報</h2>
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 space-y-6">
+                <h2 class="text-lg font-bold text-gray-800 border-b pb-4">基本情報</h2>
                 
-                <div class="space-y-6">
-                    <div>
-                        <label class="block mb-2 text-sm font-bold text-gray-700">店舗名 <span class="text-red-500">*</span></label>
-                        <input type="text" name="name" value="{{ $company->name }}" required 
-                               class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-green-500 focus:border-green-500 block w-full p-3 outline-none transition-all"
-                               placeholder="例：口コミカフェ 渋谷店">
-                    </div>
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-gray-700">店舗名 <span class="text-red-500">*</span></label>
+                    <input type="text" name="name" value="{{ $company->name }}" required 
+                           class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus-brand block w-full p-3 outline-none transition-all">
+                </div>
 
-                    <div>
-                        <label class="block mb-2 text-sm font-bold text-gray-700">住所</label>
-                        <input type="text" name="address" value="{{ $company->address ?? '' }}" 
-                               class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-green-500 focus:border-green-500 block w-full p-3 outline-none transition-all"
-                               placeholder="例：東京都渋谷区〇〇 1-2-3">
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-gray-700">企業・店舗ロゴ</label>
+                    @if($company->logo_path)
+                        <div class="mb-3">
+                            <img src="{{ asset('storage/' . $company->logo_path) }}" alt="店舗ロゴ" class="h-16 object-contain">
+                        </div>
+                    @endif
+                    <input type="file" name="logo" accept="image/*"
+                           class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus-brand block w-full p-2 outline-none">
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-gray-700">テーマカラー</label>
+                    <div class="flex items-center gap-4">
+                        <input type="color" name="theme_color" value="{{ $company->theme_color ?? '#16a34a' }}" 
+                            class="h-12 w-20 cursor-pointer rounded-lg border border-gray-200">
+                        <p class="text-xs text-gray-500 font-medium">※アンケート画面のボタンやチェックの色に反映されます。</p>
                     </div>
+                </div>
 
-                    <div>
-                        <label class="block mb-2 text-sm font-bold text-gray-700">Google Map URL</label>
-                        <input type="url" name="google_map_url" value="{{ $company->google_map_url ?? '' }}" 
-                               class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-green-500 focus:border-green-500 block w-full p-3 outline-none transition-all"
-                               placeholder="例：https://maps.app.goo.gl/...">
-                        <p class="mt-2 text-xs text-gray-500 font-medium">※お客様に案内するGoogle Mapの共有リンク（URL）を入力してください。</p>
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-gray-700">住所</label>
+                    <input type="text" name="address" value="{{ $company->address ?? '' }}" 
+                           class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus-brand block w-full p-3 outline-none transition-all"
+                           placeholder="例：東京都渋谷区〇〇 1-2-3">
+                </div>
+
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-gray-700">Google Map URL</label>
+                    <input type="url" name="google_map_url" value="{{ $company->google_map_url ?? '' }}" 
+                           class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus-brand block w-full p-3 outline-none transition-all"
+                           placeholder="例：https://maps.google.com/...">
+                </div>
+
+                <h2 class="text-lg font-bold text-gray-800 border-b pb-4 pt-4">アンケート画面メッセージ設定</h2>
+
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-gray-700">ウェルカムメッセージ（アンケート開始時）</label>
+                    <input type="hidden" name="welcome_message" id="welcome_message_input" value="{{ $company->welcome_message }}">
+                    <div class="bg-gray-50 rounded-xl overflow-hidden border border-gray-200">
+                        <div id="welcome-editor" class="bg-white min-h-[120px] text-sm">
+                            {!! $company->welcome_message !!}
+                        </div>
                     </div>
+                    <p class="mt-2 text-xs text-gray-500 font-medium">※アンケート回答画面の最上部、タイトルの下に表示されます。未入力の場合はアンケート自体の説明文が表示されます。</p>
+                </div>
+
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-gray-700">完了メッセージ（口コミ生成後ページ）</label>
+                    <input type="hidden" name="completion_message" id="completion_message_input" value="{{ $company->completion_message }}">
+                    <div class="bg-gray-50 rounded-xl overflow-hidden border border-gray-200">
+                        <div id="completion-editor" class="bg-white min-h-[120px] text-sm">
+                            {!! $company->completion_message !!}
+                        </div>
+                    </div>
+                    <p class="mt-2 text-xs text-gray-500 font-medium">※AIが口コミを生成した後の画面（コピーボタン等があるページ）に表示されます。お礼の言葉や、クーポン・特典の案内文などを記載するのに最適です。</p>
                 </div>
             </div>
 
@@ -56,4 +94,39 @@
             </div>
         </form>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <script>
+        // エディタのツールバー設定（太字、斜体、リスト、リンク、色など最低限使いやすいもの）
+        const toolbarOptions = [
+            ['bold', 'italic', 'underline', 'strike'],        // 飾り文字
+            [{ 'color': [] }, { 'background': [] }],          // 文字色・背景色
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],     // 箇条書き
+            ['link', 'clean']                                 // リンク挿入・リセット
+        ];
+
+        // ウェルカムメッセージエディタの起動
+        const welcomeQuill = new Quill('#welcome-editor', {
+            modules: { toolbar: toolbarOptions },
+            theme: 'snow'
+        });
+
+        // 完了メッセージエディタの起動
+        const completionQuill = new Quill('#completion-editor', {
+            modules: { toolbar: toolbarOptions },
+            theme: 'snow'
+        });
+
+        // フォーム送信時に、エディタに書かれたHTMLコードをhiddenフィールドに詰め込む処理
+        const form = document.getElementById('settings-form');
+        form.onsubmit = function() {
+            // welcomeエディタのHTMLを取得してセット
+            const welcomeInput = document.getElementById('welcome_message_input');
+            welcomeInput.value = welcomeQuill.root.innerHTML === '<p><br></p>' ? '' : welcomeQuill.root.innerHTML;
+
+            // completionエディタのHTMLを取得してセット
+            const completionInput = document.getElementById('completion_message_input');
+            completionInput.value = completionQuill.root.innerHTML === '<p><br></p>' ? '' : completionQuill.root.innerHTML;
+        };
+    </script>
 </x-app-layout>

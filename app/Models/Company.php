@@ -13,10 +13,15 @@ class Company extends Model
     protected $fillable = [
         'user_id',
         'name',
+        'logo_path',
         'agency_id',
+        'welcome_message',
+        'theme_color',
+        'completion_message',
         'plan_id',      
         'applied_price',
-        'selected_survey_id'
+        'selected_survey_id',
+        'google_map_url'
     ];
     public function user()
     {
