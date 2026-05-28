@@ -36,7 +36,7 @@
             @auth
                 <div class="mb-6">
                     <a href="{{ route('dashboard') }}" class="inline-flex items-center text-sm font-bold text-gray-500 hover:text-gray-700 transition-colors bg-gray-100 px-4 py-2 rounded-lg">
-                        🏠 ダッシュボードに戻る
+                        ダッシュボードに戻る
                     </a>
                 </div>
             @endauth
@@ -55,29 +55,29 @@
                 </div>
             @endif
 
-            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-900 mb-6 text-center tracking-tight">✨ あなたのための口コミが完成しました</h2>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-900 mb-6 text-center tracking-tight">あなたのための口コミが完成しました</h2>
 
             <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-8 relative">
-                <p id="generated-text" class="text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-wrap">{{ $aiText }}</p>
+                <p id="generated-text" class="text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-wrap break-words">{{ $aiText }}</p>
             </div>
 
             <div class="space-y-4">
                 {{-- ① このまま投稿するメインボタン（テーマカラーを適用） --}}
                 @if(!empty($company->google_map_url))
                     <button onclick="copyAndRedirect(this)" class="w-full text-white bg-brand btn-brand-hover font-extrabold rounded-2xl text-lg px-5 py-4 shadow-lg transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
-                        <span class="text-xl">🚀</span> <span id="btn-text">このままGoogleに投稿する</span>
+                        <span class="text-xl"></span> <span id="btn-text">このままGoogleに投稿する</span>
                     </button>
                     <p class="text-xs text-center text-gray-500 font-medium">※文章がコピーされ、Googleマップが開きます。<br>入力欄に「ペースト（貼り付け）」して投稿してください。</p>
                 @endif
 
                 {{-- ② 自分で編集したい人向けのコピーボタン --}}
                 <button onclick="onlyCopy(this)" class="w-full text-gray-700 bg-white border-2 border-gray-200 hover:bg-gray-50 font-bold rounded-2xl text-base px-5 py-4 transition-all flex items-center justify-center gap-2 mt-4">
-                    📝 自分で編集するため文章だけコピーする
+                    自分で編集するため文章だけコピーする
                 </button>
             </div>
             
             <div class="mt-8 text-center">
-                <a href="{{ url('/') }}" class="text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors">
+                <a href="{{ route('review.show', $company->token) }}" class="text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors">
                     ← はじめからやり直す
                 </a>
             </div>
