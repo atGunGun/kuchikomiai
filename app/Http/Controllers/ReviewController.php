@@ -29,10 +29,11 @@ class ReviewController extends Controller
     }
 
     // ② お客様用の専用フォーム表示（QRコードからのアクセス）
-    public function showReviewForm($id)
+    public function showReviewForm($token) // 引数を $id から $token に変更
     {
-        // ★ selectedSurvey.questions を一緒に読み込む
-        $company = Company::with('selectedSurvey.questions')->findOrFail($id);
+        // ★ findOrFail($id) から where('token', $token)->firstOrFail() に変更
+        $company = Company::with('selectedSurvey.questions')->where('token', $token)->firstOrFail();
+        
         $reviews = collect();
         return view('form', compact('company', 'reviews'));
     }
@@ -192,7 +193,8 @@ class ReviewController extends Controller
         $latestReviews = \App\Models\Review::where('company_id', $myCompany->id)
                             ->latest()->take(5)->get();
 
-        $reviewUrl = route('review.show', $myCompany->id);
+        // $reviewUrl = route('review.show', $myCompany->id);
+        $reviewUrl = route('review.show', $myCompany->token);
 
         return view('company_dashboard', compact('myCompany', 'latestReviews', 'stats', 'surveyStats', 'reviewUrl', 'filter'));
     }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Company extends Model
 {
@@ -21,7 +22,8 @@ class Company extends Model
         'plan_id',      
         'applied_price',
         'selected_survey_id',
-        'google_map_url'
+        'google_map_url',
+        'token'
     ];
     public function user()
     {
@@ -42,6 +44,15 @@ class Company extends Model
     {
         // 企業は1つの「選ばれたアンケート」を持つ
         return $this->belongsTo(Survey::class, 'selected_survey_id');
+    }
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($company) {
+            if (empty($company->token)) {
+                $company->token = Str::random(12);
+            }
+        });
     }
 
 }

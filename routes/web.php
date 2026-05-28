@@ -21,7 +21,9 @@ Route::get('/', [App\Http\Controllers\PublicNoticeController::class, 'top'])->na
 Route::get('/form', [ReviewController::class, 'showForm'])->name('review.index'); 
 Route::post('/generate', [ReviewController::class, 'generate'])->name('review.generate');
 // ※店舗ごとの専用QRコード読み込み用
-Route::get('/review/{id}', [ReviewController::class, 'showReviewForm'])->name('review.show');
+// Route::get('/review/{id}', [ReviewController::class, 'showReviewForm'])->name('review.show');
+Route::get('/review/{token}', [ReviewController::class, 'showReviewForm'])->name('review.show');
+
 // ★追加：コピーやGoogle遷移をカウントするAPIルート
 Route::post('/review/{id}/track', [ReviewController::class, 'track'])->name('review.track');
 
