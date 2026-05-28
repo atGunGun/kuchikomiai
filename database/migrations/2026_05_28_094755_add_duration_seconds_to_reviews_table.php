@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('reviews', function (Blueprint $table) {
-            // 所要時間（秒）を保存する整数型の枠を追加
-            $table->integer('duration_seconds')->default(0)->after('generated_text');
-        });
+        // reviewsテーブルに duration_seconds が「無い」場合のみ実行する
+        if (!Schema::hasColumn('reviews', 'duration_seconds')) {
+            Schema::table('reviews', function (Blueprint $table) {
+                $table->integer('duration_seconds')->default(0)->after('generated_text');
+            });
+        }
     }
 
     public function down(): void
