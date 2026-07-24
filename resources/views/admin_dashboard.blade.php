@@ -1,27 +1,27 @@
 <x-app-layout>
     <div class="space-y-6">
         
-        <div class="flex flex-col md:flex-row justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-red-100 border-t-4 border-t-red-600">
+        <div class="flex flex-col md:flex-row justify-between items-center bg-white p-6 rounded-2xl shadow-sm border_green">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                    <span class="text-3xl text-red-600">👑</span> 運営マスター管理
+                    <span class="aicon"><img src="/img/masta.svg" alt="" class="h-10"></span> 運営マスター管理
                 </h1>
                 <p class="text-gray-500 mt-1">システム全体の設定や企業データの管理を行います。</p>
             </div>
             
             <div class="flex flex-wrap gap-3 mt-4 md:mt-0">
                 <a href="{{ route('admin.plans.index') }}" class="text-sm font-bold text-white bg-orange-500 hover:bg-orange-600 px-5 py-2.5 rounded-xl transition-colors shadow-sm flex items-center gap-2">
-                    <span>📋</span> プラン管理
+                    <span class="btn_aicon"><img src="/img/plan.svg" alt="" class="h-10"></span> プラン管理
                 </a>
                 <a href="{{ route('admin.settings.global') }}" class="text-sm font-bold text-white bg-gray-700 hover:bg-gray-800 px-5 py-2.5 rounded-xl transition-colors shadow-sm flex items-center gap-2">
-                    <span>⚙️</span> システム設定
+                    <span class="btn_aicon"><img src="/img/haguruma.svg" alt="" class="h-10"></span> システム設定
                 </a>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
-                <div class="p-4 bg-red-50 text-red-600 rounded-xl text-3xl">🏢</div>
+                <div class="p-4 bg-red-50 text-red-600 rounded-xl text-3xl"><img src="/img/list.svg" alt="" class="h-10"></div>
                 <div>
                     <p class="text-sm text-gray-500 font-bold tracking-wider">登録企業総数</p>
                     <p class="text-3xl font-extrabold text-gray-900">{{ $companyCount }} <span class="text-base text-gray-500 font-medium">件</span></p>
@@ -34,7 +34,7 @@
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="p-6 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
                     <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-                        <span>📢</span> お知らせ管理
+                        <span class="aicon"><img src="/img/news.svg" alt="" class="h-10"></span> お知らせ管理
                     </h2>
                     <div class="flex gap-2">
                         <a href="{{ route('admin.notices.index') }}" class="text-xs font-bold text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-colors">一覧・カテゴリ</a>
@@ -82,7 +82,7 @@
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="p-6 border-b border-gray-100 bg-gray-50">
                     <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-                        <span>🏢</span> 企業一覧
+                        <span> <span class="aicon"><img src="/img/list.svg" alt="" class="h-10"></span> </span> 企業一覧
                     </h2>
                 </div>
                 

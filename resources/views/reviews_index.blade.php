@@ -4,9 +4,9 @@
         <div class="flex items-center justify-between border-b pb-4">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                    <span class="text-2xl">📝</span> 口コミ生成履歴
+                <span class="mr-2"><img src="/img/top_aicon05.svg" alt="" class="h-10"></span>口コミ生成履歴
                 </h1>
-                <p class="text-gray-500 mt-1">これまでにAIが生成したすべての口コミを確認できます。</p>
+                <p class="text-gray-800 mt-3">これまでにAIが生成したすべての口コミを確認できます。</p>
             </div>
             <a href="{{ route('dashboard') }}" class="text-sm font-bold text-gray-500 hover:text-green-600">← ダッシュボードへ戻る</a>
         </div>

@@ -6,11 +6,11 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                    <span class="text-2xl">📝</span> 新しいアンケートを作成
+                <span class="mr-2"><img src="/img/top_aicon03.svg" alt="" class="h-10"></span>  新しいアンケートを作成
                 </h1>
-                <p class="text-gray-500 mt-1">お客様に聞きたい設問を自由に組み合わせて作成できます。</p>
+                <p class="text-gray-700 mt-3">お客様に聞きたい設問を自由に組み合わせて作成できます。</p>
             </div>
-            <a href="{{ route('surveys.index') }}" class="text-sm font-bold text-gray-500 hover:text-gray-700">キャンセル</a>
+            <a href="{{ route('surveys.index') }}" class="text-sm font-bold text-gray-500 hover:text-gray-800">キャンセル</a>
         </div>
 
         <form action="{{ route('surveys.store') }}" method="POST" id="survey-form">
@@ -22,11 +22,11 @@
                 </h2>
                 <div class="space-y-5">
                     <div>
-                        <label class="block mb-2 text-sm font-bold text-gray-700">アンケートタイトル <span class="text-red-500">*</span></label>
+                        <label class="block mb-2 text-sm font-bold text-gray-800">アンケートタイトル <span class="text-red-500">*</span></label>
                         <input type="text" name="title" required class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus-brand block w-full p-3 outline-none transition-all" placeholder="例：接客・料理に関するアンケート">
                     </div>
                     <div>
-                        <label class="block mb-2 text-sm font-bold text-gray-700">お客様へのメッセージ（説明文）</label>
+                        <label class="block mb-2 text-sm font-bold text-gray-800">お客様へのメッセージ（説明文）</label>
                         <textarea name="description" rows="2" class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus-brand block w-full p-3 outline-none transition-all" placeholder="例：お店の感想をお聞かせください。AIが素敵な口コミを作成します。"></textarea>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                     <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
                         <span class="text-green-600">02.</span> 設問の設定
                     </h2>
-                    <span class="text-xs text-gray-500 font-medium">左端の「≡」をドラッグして並び替え</span>
+                    <span class="text-xs text-gray-700 font-medium">左端の「≡」をドラッグして並び替え</span>
                 </div>
 
                 <div id="questions-container" class="space-y-4"></div>
@@ -48,7 +48,7 @@
             </div>
 
             <div class="mt-12 pt-8 border-t border-gray-200 flex justify-center">
-                <button type="submit" class="text-white bg-green-600 hover:bg-green-700 font-extrabold rounded-2xl text-lg px-20 py-4 shadow-lg shadow-green-200 transition-all transform hover:-translate-y-1">
+                <button type="submit" class="text-white bg-[#0566F4] hover:bg-[#08866D] font-extrabold rounded-2xl text-lg px-20 py-4 shadow-lg shadow-[#eee] transition-all transform hover:-translate-y-1">
                     この内容で保存する
                 </button>
             </div>
@@ -96,11 +96,11 @@
                         <label class="block mb-2 text-xs font-bold text-brand uppercase">選択肢</label>
                         <div id="options-list-${qCount}" class="space-y-2 mb-3">
                             <div class="flex items-center gap-2">
-                                <input type="text" name="questions[${qCount}][options][]" class="bg-white border border-green-200 text-sm rounded-lg focus:ring-green-500 block w-full p-2" placeholder="選択肢を入力">
+                                <input type="text" name="questions[${qCount}][options][]" class="bg-white border border-gray-300 text-sm rounded-lg focus:ring-green-500 block w-full p-2" placeholder="選択肢を入力">
                                 <button type="button" onclick="this.parentElement.remove()" class="text-gray-400 hover:text-red-500 px-2 font-bold">✕</button>
                             </div>
                         </div>
-                        <button type="button" onclick="addOption(${qCount})" class="text-xs font-bold text-green-600 bg-white border border-green-200 px-3 py-1.5 rounded-lg hover:bg-green-100 transition-colors">
+                        <button type="button" onclick="addOption(${qCount})" class="text-xs font-bold text-[#08866D] bg-white border border-[#08866D] px-3 py-1.5 rounded-lg hover:bg-[#08866D] hover:text-[#fff] transition-colors">
                             ＋ 選択肢を追加
                         </button>
                     </div>
@@ -118,7 +118,7 @@
             const div = document.createElement('div');
             div.className = "flex items-center gap-2 animate-fade-in";
             div.innerHTML = `
-                <input type="text" name="questions[${index}][options][]" class="bg-white border border-green-200 text-sm rounded-lg focus:ring-green-500 block w-full p-2" placeholder="選択肢を入力">
+                <input type="text" name="questions[${index}][options][]" class="bg-white border border-gray-300 text-sm rounded-lg focus:ring-green-500 block w-full p-2" placeholder="選択肢を入力">
                 <button type="button" onclick="this.parentElement.remove()" class="text-gray-400 hover:text-red-500 px-2 font-bold">✕</button>
             `;
             list.appendChild(div);

@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="space-y-8">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-            <h1 class="text-xl font-bold text-gray-800">📊 分析ダッシュボード</h1>
+            <h1 class="text-xl font-bold text-gray-800 flex items-center"><span class="mr-2"><img src="/img/top_aicon01.svg" alt="" class="h-10"></span>分析ダッシュボード</h1>
             <form action="{{ route('dashboard') }}" method="GET" class="flex flex-wrap items-center gap-3">
                 <select name="filter" onchange="this.form.submit()" class="bg-gray-50 border border-gray-200 text-sm rounded-xl focus:ring-green-500 block p-2.5">
                     <option value="this_month" {{ $filter == 'this_month' ? 'selected' : '' }}>今月</option>
@@ -39,8 +39,8 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div class="lg:col-span-2 space-y-6">
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                        <h3 class="font-bold text-gray-800">✨ 最新の口コミ</h3>
+                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                        <h3 class="font-bold text-gray-800 flex items-center"><span class="mr-2"><img src="/img/top_aicon02.svg" alt="" class="h-10"></span>最新の口コミ</h3>
                         <a href="{{ route('reviews.index') }}" class="text-sm text-green-600 font-bold hover:underline">すべて見る →</a>
                     </div>
                     <div class="p-6 space-y-4">
@@ -53,12 +53,20 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <h3 class="font-bold text-gray-800 mb-6">📊 項目別回答集計</h3>
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+
+                <div class="bg-gray-50 border border-gray-100 px-6 py-4">
+                    <h3 class="font-bold text-gray-800 flex items-center"><span class="mr-2"><img src="/img/top_aicon03.svg" alt="" class="h-10"></span> 項目別回答集計</h3>
+                </div>
+
+                <div class="bg-white p-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         @foreach($surveyStats as $questionText => $counts)
                         <div>
-                            <p class="text-sm font-bold text-gray-600 mb-3 border-l-4 border-green-500 pl-2">{{ $questionText }}</p>
+                            <div class="text-sm font-bold text-gray-600 mb-3 pl-2 flex items-center">
+                            <span class="mr-2"><img src="/img/fuki_aicon.svg" alt="" class="h-10" style="width: 25px;"></span> 
+                                <p>{{ $questionText }}</p>
+                            </div>
                             <div class="space-y-2">
                                 @foreach($counts as $label => $count)
                                 <div class="flex items-center justify-between text-sm">
@@ -76,11 +84,14 @@
                         @endforeach
                     </div>
                 </div>
+
+</div>
+
             </div>
 
             <div class="space-y-6">
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center">
-                    <h3 class="font-bold text-gray-800 mb-4">📱 店頭掲示用QR</h3>
+                    <h3 class="font-bold text-gray-800 mb-4">店頭掲示用QR</h3>
                     <div class="bg-white p-4 rounded-xl border border-gray-100 inline-block mb-4">
                         {!! QrCode::size(150)->generate($reviewUrl) !!}
                     </div>

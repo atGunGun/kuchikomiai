@@ -1,13 +1,16 @@
 <x-app-layout>
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 
-    <div class="max-w-3xl mx-auto space-y-6">
+    <div class="max-w-5xl mx-auto space-y-6">
         
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                <span class="text-2xl">⚙️</span> 店舗設定
-            </h1>
-            <p class="text-gray-500 mt-1">店舗の基本情報や、アンケート画面の案内文をカスタマイズできます。</p>
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                <span class="mr-2"><img src="/img/top_aicon06.svg" alt="" class="h-10"></span>店舗設定
+                </h1>
+                <p class="text-gray-800 mt-3">店舗の基本情報や、アンケート画面の案内文をカスタマイズできます。</p>
+            </div>
+            <a href="{{ route('dashboard') }}" class="text-sm font-bold text-gray-500 hover:text-green-600">← ダッシュボードへ戻る</a>
         </div>
 
         @if(session('success'))
@@ -88,7 +91,7 @@
             </div>
 
             <div class="mt-8 flex justify-end">
-                <button type="submit" class="text-white bg-green-600 hover:bg-green-700 font-extrabold rounded-2xl text-base px-10 py-3 shadow-md shadow-green-200 transition-all transform hover:-translate-y-0.5">
+                <button type="submit" class="text-white bg-[#0566F4] hover:bg-green-700 font-extrabold rounded-2xl text-base px-10 py-3 shadow-md  transition-all transform hover:-translate-y-0.5">
                     設定を保存する
                 </button>
             </div>

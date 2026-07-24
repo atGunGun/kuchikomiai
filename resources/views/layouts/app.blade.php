@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>口コミAIくん</title>
+    <title>Coel(コエル)</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-100 antialiased text-gray-800">
@@ -14,14 +14,14 @@
             <div class="flex items-center justify-between min-h-[4rem] py-2">
                 <div class="flex items-center shrink-0">
                     <a href="{{ route('dashboard') }}" class="text-xl font-extrabold text-green-600 tracking-tight flex items-center gap-2">
-                        <span>🏪</span> 口コミAIくん
+                    <img src="/img/logo.svg" alt="Coel" class="h-10" style="width: 80px;">
                     </a>
                 </div>
                 
                 <div class="flex flex-wrap justify-end items-center gap-3 sm:gap-6 ml-4">
                     <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-green-600 font-bold text-xs sm:text-sm transition-colors whitespace-nowrap">ダッシュボード</a>
                     <a href="{{ route('surveys.index') }}" class="text-gray-600 hover:text-green-600 font-bold text-xs sm:text-sm transition-colors whitespace-nowrap">アンケート管理</a>
-                    <a href="{{ route('settings.edit') }}" class="text-gray-600 hover:text-green-600 font-bold text-xs sm:text-sm transition-colors whitespace-nowrap">⚙️ 店舗設定</a>
+                    <a href="{{ route('settings.edit') }}" class="text-gray-600 hover:text-green-600 font-bold text-xs sm:text-sm transition-colors whitespace-nowrap">店舗設定</a>
                     
                     <form method="POST" action="/logout" class="inline m-0">
                         @csrf

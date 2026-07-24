@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>プラン管理マスタ</title>
-</head>
-<body>
-    <h1>プラン管理マスタ</h1>
-    <a href="{{ route('dashboard') }}">← ダッシュボードへ戻る</a>
-    <hr>
+<x-app-layout>
+    <div class="py-12">
+        <div class="plan_inner">
+
+    <body>
+    <h1 class="art_tit"><span><img src="/img/plan.svg" alt="" class="h-10"></span>プラン管理マスタ</h1>
+    <a href="{{ route('dashboard') }}" class="re_btn">← ダッシュボードへ戻る</a>
 
     @if (session('success'))
         <p style="color: green;"><b>{{ session('success') }}</b></p>
     @endif
 
+    <div class="whi_box">
+
     <h2>新規プラン登録</h2>
-    <form action="{{ route('admin.plans.store') }}" method="POST">
+    <form action="{{ route('admin.plans.store') }}" method="POST" class="plan_tb">
         @csrf
         <div>
             <label>プラン名:</label>
@@ -26,22 +26,26 @@
         </div>
         <div>
             <label>アンケート作成上限数:</label>
-            <input type="number" name="max_surveys" min="1"> <small>※空欄の場合は「無制限」</small>
+            <div>
+            <input type="number" name="max_surveys" min="1"><br><small>※空欄の場合は「無制限」</small>
+            </div>
         </div>
         <div>
             <label>AI生成上限回数:</label>
-            <input type="number" name="max_generations" min="1"> <small>※空欄の場合は「無制限」</small>
+            <div>
+            <input type="number" name="max_generations" min="1"><br><small>※空欄の場合は「無制限」</small>
+            </div>
         </div>
 
         <div>
             <label>説明 (任意):</label>
-            <input type="text" name="description" placeholder="機能制限など">
+            <input type="texter" name="description" placeholder="機能制限など">
         </div>
-        <button type="submit">登録する</button>
+        <button type="submit" class="sub_btn">登録する</button>
     </form>
+    </div>
 
-    <hr>
-
+<div class="green_box">
     <h2>登録済みプラン一覧</h2>
     <table border="1" cellpadding="8">
         <tr>
@@ -76,5 +80,9 @@
             </tr>
         @endforelse
     </table>
+</div>
 </body>
-</html>
+
+        </div>
+    </div>
+</x-guest-layout>
