@@ -105,8 +105,8 @@
                 @auth
                     <a href="{{ url('/dashboard') }}">ダッシュボード</a>
                 @else
-                <a href="http://kuchikomiai.test/login" class="log_btn">ログイン</a>
-                <a href="http://kuchikomiai.test/register" class="new_btn">新規登録</a>
+                <a href="./login" class="log_btn">ログイン</a>
+                <a href="./register" class="new_btn">新規登録</a>
                 @endauth
             </div>
 
