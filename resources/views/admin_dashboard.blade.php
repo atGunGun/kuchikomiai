@@ -19,15 +19,35 @@
             </div>
         </div>
 
+        <!-- ★ 修正：登録企業数のステータス別表示（3カラム） -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {{-- 1. 総数 --}}
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
-                <div class="p-4 bg-red-50 text-red-600 rounded-xl text-3xl"><img src="/img/list.svg" alt="" class="h-10"></div>
+                <div class="p-4 bg-gray-50 text-gray-600 rounded-xl text-3xl"><img src="/img/list.svg" alt="" class="h-10"></div>
                 <div>
                     <p class="text-sm text-gray-500 font-bold tracking-wider">登録企業総数</p>
-                    <p class="text-3xl font-extrabold text-gray-900">{{ $companyCount }} <span class="text-base text-gray-500 font-medium">件</span></p>
+                    <p class="text-3xl font-extrabold text-gray-900">{{ $companyCount ?? 0 }} <span class="text-base text-gray-500 font-medium">件</span></p>
                 </div>
             </div>
+            
+            {{-- 2. 利用中（アクティブ） --}}
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                <div class="p-4 bg-green-50 text-green-600 rounded-xl text-3xl">✅</div>
+                <div>
+                    <p class="text-sm text-gray-500 font-bold tracking-wider">利用中（アクティブ）</p>
+                    <p class="text-3xl font-extrabold text-green-600">{{ $activeCount ?? 0 }} <span class="text-base text-gray-500 font-medium">件</span></p>
+                </div>
             </div>
+
+            {{-- 3. 停止中（非アクティブ） --}}
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                <div class="p-4 bg-red-50 text-red-600 rounded-xl text-3xl">⏸️</div>
+                <div>
+                    <p class="text-sm text-gray-500 font-bold tracking-wider">停止中（非アクティブ）</p>
+                    <p class="text-3xl font-extrabold text-red-500">{{ $inactiveCount ?? 0 }} <span class="text-base text-gray-500 font-medium">件</span></p>
+                </div>
+            </div>
+        </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             
@@ -66,7 +86,15 @@
                                     <p class="text-xs text-blue-500 mt-1">{{ $notice->target_role === 'all' ? '全員対象' : $notice->target_role }}</p>
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <a href="{{ route('admin.notices.edit', $notice->id) }}" class="text-blue-600 hover:text-blue-800 font-bold px-3 py-1.5 bg-blue-50 rounded-lg text-xs">編集</a>
+                                    <div class="flex justify-end gap-2">
+                                        <a href="{{ route('admin.notices.edit', $notice->id) }}" class="text-blue-600 hover:text-blue-800 font-bold px-3 py-1.5 bg-blue-50 rounded-lg text-xs">編集</a>
+                                        {{-- ダッシュボード上の簡易削除ボタン --}}
+                                        <form action="{{ route('admin.notices.destroy', $notice->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-500 hover:text-red-700 font-bold px-3 py-1.5 bg-red-50 rounded-lg text-xs">削除</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             @empty

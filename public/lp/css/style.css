@@ -2343,7 +2343,14 @@ padding: 8.334% 0;
 	margin-bottom:12px;
 	font-size: clamp(1.6rem,2.3vw,1.8rem);
 }
-
+input.clearForm2 {
+    background: #0c66f4;
+    max-width: 350px;
+    margin: 50px auto;
+    display: block;
+    padding:  3rem 10px;
+    border-radius: 20px;
+}
 /*-- 固定ここまで --*/
 
 

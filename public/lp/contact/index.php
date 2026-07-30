@@ -21,23 +21,23 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="./css/default.css">
-<link rel="stylesheet" href="./css/style.css" media="screen,print">
-<link rel="stylesheet" href="./css/slick-theme.css" media="screen,print">
-<link rel="stylesheet" href="./css/slick.css" media="screen,print">
+<link rel="stylesheet" href="./../css/default.css">
+<link rel="stylesheet" href="./../css/style.css" media="screen,print">
+<link rel="stylesheet" href="./../css/slick-theme.css" media="screen,print">
+<link rel="stylesheet" href="./../css/slick.css" media="screen,print">
 
-<link rel="shortcut icon" href="./img/common/favicon.png">
-<link rel="icon" type="image/png" href="./img/common/favicon.png">
-<link rel="apple-touch-icon-precomposed" href="./img/common/apple-touch-icon-152x152.png">
+<link rel="shortcut icon" href="./../img/common/favicon.png">
+<link rel="icon" type="image/png" href="./../img/common/favicon.png">
+<link rel="apple-touch-icon-precomposed" href="./../img/common/apple-touch-icon-152x152.png">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="./js/slick.min.js"></script>
+<script src="./../js/slick.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.6/ScrollMagic.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
 
 <!--[if lt IE 9]>
-<script src="./js/html5.js"></script>
-<script src="./js/css3-mediaqueries.js"></script>
+<script src="./../js/html5.js"></script>
+<script src="./../js/css3-mediaqueries.js"></script>
 <![endif]-->
 
 </head>
@@ -49,7 +49,7 @@
 <header>
     <div class="hLogo">
         <a href="./">
-            <h1 class="title"><img src="./img/common/logo.svg" alt="Coel"></h1>
+            <h1 class="title"><img src="./../img/common/logo.svg" alt="Coel"></h1>
         </a>
     </div>
     <ul class="headerUl">
@@ -192,7 +192,7 @@
 						</tr>
 
 						<tr>
-						<th class="vert"><label for="msg">ご用件<em>必須</em></label></th>
+						<th class="vert"><label for="msg">お問い合わせ詳細内容<em>必須</em></label></th>
 						<td>
 						<textarea name="msg" id="msg" cols="50" rows="5" required></textarea>
 						</td>
@@ -220,8 +220,8 @@
 </div><!-- /#main -->
 
 <div class="side_bnr_area">
-    <div class="side_close_btn"><img src="./img/common/side_close.svg" alt="close"></div>
-    <a href="./contact" class="side_bnr"><img src="./img/common/side_bnr.png" alt="ご協力いただいたご契約者様限定 利用料３ヶ月無料キャンペーン"></a>
+    <div class="side_close_btn"><img src="./../img/common/side_close.svg" alt="close"></div>
+    <a href="./contact" class="side_bnr"><img src="./../img/common/side_bnr.png" alt="ご協力いただいたご契約者様限定 利用料３ヶ月無料キャンペーン"></a>
     <p class="text1">※定員に達し次第キャンペーン終了となります</p>
 </div>
 
@@ -231,7 +231,7 @@
     <div class="inner">
         <div class="flex">
             <div class="left">
-                <p class="logo"><a href="./"><img src="./img/common/logo.svg" alt="Coel"></a></p>
+                <p class="logo"><a href="./"><img src="./../img/common/logo.svg" alt="Coel"></a></p>
             </div>
             <div class="right">
                 <ul class="ft_list1">
@@ -252,7 +252,7 @@
 <!-- /footer -->
 
 
-<script src="./js/script.js"></script>
+<script src="./../js/script.js"></script>
 <!-- MV画像動き -->
 <script>
 const path = document.getElementById("blobPath");

@@ -6,7 +6,7 @@
     <title>Coel(コエル)</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100 antialiased text-gray-800">
+<body class="bg-gray-100 antialiased text-gray-800 antialiased w-full overflow-x-hidden">
     
     @auth
     <nav class="bg-white border-b border-gray-200 fixed z-30 w-full shadow-sm">

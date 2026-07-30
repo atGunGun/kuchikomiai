@@ -98,4 +98,29 @@ class AdminNoticeController extends Controller
 
         return back()->with('success', '設定を更新しました。');
     }
+
+    // 記事の削除
+    public function destroy(Notice $notice)
+    {
+        if (auth()->user()->role !== 'admin') abort(403);
+        
+        $notice->delete();
+        
+        return back()->with('success', 'お知らせを削除しました。');
+    }
+
+    // カテゴリの削除
+    public function destroyCategory(NoticeCategory $category)
+    {
+        if (auth()->user()->role !== 'admin') abort(403);
+        
+        // 紐づいているお知らせがある場合は削除をブロックする安全対策
+        if ($category->notices()->count() > 0) {
+            return back()->with('error', 'このカテゴリが設定されているお知らせがあるため、削除できません。先に記事のカテゴリを変更してください。');
+        }
+        
+        $category->delete();
+        
+        return back()->with('success', 'カテゴリを削除しました。');
+    }
 }

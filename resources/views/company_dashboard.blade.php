@@ -36,6 +36,34 @@
             </div>
         </div>
 
+        <!-- ★ 横幅いっぱい＆左寄せの綺麗なお知らせセクション -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
+                <h3 class="font-bold text-gray-800 flex items-center">
+                    <span class="mr-2">📢</span>運営からのお知らせ
+                </h3>
+            </div>
+            <div class="px-6 py-2">
+                <ul class="divide-y divide-gray-100">
+                    @forelse($notices as $notice)
+                        <li class="py-4 flex flex-col md:flex-row md:items-center gap-2 md:gap-4 text-left">
+                            <div class="flex items-center gap-4 shrink-0">
+                                <span class="text-sm text-gray-500 font-medium tracking-wider w-[80px]">{{ $notice->created_at->format('Y.m.d') }}</span>
+                                <span class="text-xs px-3 py-1 rounded bg-blue-50 text-blue-600 font-bold border border-blue-100 min-w-[80px] text-center">
+                                    {{ $notice->category->name ?? 'お知らせ' }}
+                                </span>
+                            </div>
+                            <div class="flex-1 md:ml-2">
+                                <p class="text-sm font-bold text-gray-800">{{ $notice->title }}</p>
+                            </div>
+                        </li>
+                    @empty
+                        <li class="text-sm text-gray-500 py-4 text-left">現在お知らせはありません</li>
+                    @endforelse
+                </ul>
+            </div>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div class="lg:col-span-2 space-y-6">
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -54,39 +82,36 @@
                 </div>
 
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="bg-gray-50 border border-gray-100 px-6 py-4">
+                        <h3 class="font-bold text-gray-800 flex items-center"><span class="mr-2"><img src="/img/top_aicon03.svg" alt="" class="h-10"></span> 項目別回答集計</h3>
+                    </div>
 
-                <div class="bg-gray-50 border border-gray-100 px-6 py-4">
-                    <h3 class="font-bold text-gray-800 flex items-center"><span class="mr-2"><img src="/img/top_aicon03.svg" alt="" class="h-10"></span> 項目別回答集計</h3>
-                </div>
-
-                <div class="bg-white p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        @foreach($surveyStats as $questionText => $counts)
-                        <div>
-                            <div class="text-sm font-bold text-gray-600 mb-3 pl-2 flex items-center">
-                            <span class="mr-2"><img src="/img/fuki_aicon.svg" alt="" class="h-10" style="width: 25px;"></span> 
-                                <p>{{ $questionText }}</p>
-                            </div>
-                            <div class="space-y-2">
-                                @foreach($counts as $label => $count)
-                                <div class="flex items-center justify-between text-sm">
-                                    <span class="text-gray-500">{{ $label }}</span>
-                                    <div class="flex items-center gap-2 flex-1 mx-4">
-                                        <div class="w-full bg-gray-100 rounded-full h-2">
-                                            <div class="bg-green-500 h-2 rounded-full" style="width: {{ $stats['total_count'] > 0 ? ($count / $stats['total_count']) * 100 : 0 }}%"></div>
-                                        </div>
-                                        <span class="font-bold text-gray-700 w-8 text-right">{{ $count }}</span>
-                                    </div>
+                    <div class="bg-white p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            @foreach($surveyStats as $questionText => $counts)
+                            <div>
+                                <div class="text-sm font-bold text-gray-600 mb-3 pl-2 flex items-center">
+                                <span class="mr-2"><img src="/img/fuki_aicon.svg" alt="" class="h-10" style="width: 25px;"></span> 
+                                    <p>{{ $questionText }}</p>
                                 </div>
-                                @endforeach
+                                <div class="space-y-2">
+                                    @foreach($counts as $label => $count)
+                                    <div class="flex items-center justify-between text-sm">
+                                        <span class="text-gray-500">{{ $label }}</span>
+                                        <div class="flex items-center gap-2 flex-1 mx-4">
+                                            <div class="w-full bg-gray-100 rounded-full h-2">
+                                                <div class="bg-green-500 h-2 rounded-full" style="width: {{ $stats['total_count'] > 0 ? ($count / $stats['total_count']) * 100 : 0 }}%"></div>
+                                            </div>
+                                            <span class="font-bold text-gray-700 w-8 text-right">{{ $count }}</span>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
                             </div>
+                            @endforeach
                         </div>
-                        @endforeach
                     </div>
                 </div>
-
-</div>
-
             </div>
 
             <div class="space-y-6">

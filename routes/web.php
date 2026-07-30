@@ -63,6 +63,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/admin/notices', [AdminNoticeController::class, 'store'])->name('admin.notices.store');
     Route::get('/admin/notices/{notice}/edit', [AdminNoticeController::class, 'edit'])->name('admin.notices.edit');
     Route::put('/admin/notices/{notice}', [AdminNoticeController::class, 'update'])->name('admin.notices.update');
+    Route::delete('/admin/notices/{notice}', [App\Http\Controllers\AdminNoticeController::class, 'destroy'])->name('admin.notices.destroy');
+    Route::delete('/admin/notices/categories/{category}', [App\Http\Controllers\AdminNoticeController::class, 'destroyCategory'])->name('admin.notices.categories.destroy');
 
     // 一般公開ページ
     Route::get('/notices', [PublicNoticeController::class, 'index'])->name('notices.index');

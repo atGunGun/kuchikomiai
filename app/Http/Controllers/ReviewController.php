@@ -50,6 +50,22 @@ class ReviewController extends Controller
             return back()->with('error', '店舗情報が見つかりません。');
         }
 
+        // ==========================================
+        // ★ 新規追加：プランの生成回数（今月）の上限チェック
+        // ==========================================
+        if ($company->plan && $company->plan->max_generations > 0) {
+            // この店舗の「今月」の生成回数をカウント
+            $currentMonthCount = \App\Models\Review::where('company_id', $company->id)
+                                    ->whereMonth('created_at', now()->month)
+                                    ->count();
+                                    
+            if ($currentMonthCount >= $company->plan->max_generations) {
+                // 上限に達していたらエラーメッセージと共に前の画面に戻す
+                return back()->with('error', 'この店舗は今月のAI生成上限（' . $company->plan->max_generations . '回）に達しているため、これ以上作成できません。')->withInput();
+            }
+        }
+        // ==========================================
+
         $answers = $request->input('answers', []);
 
         // ==========================================
@@ -130,7 +146,7 @@ class ReviewController extends Controller
         return view('result', compact('aiText', 'company', 'review')); // ★ result画面で track 用に $review を渡すように追加
     }
 
-    // ④ ダッシュボード表示
+// ④ ダッシュボード表示
     public function dashboard(Request $request)
     {
         $user = auth()->user();
@@ -141,8 +157,11 @@ class ReviewController extends Controller
         if (!$myCompany) {
             $companyCount = \App\Models\Company::count();
             $companies = \App\Models\Company::with('agency')->latest()->get();
+
+            $activeCount = \App\Models\Company::whereNotNull('plan_id')->count();
+            $inactiveCount = \App\Models\Company::whereNull('plan_id')->count();
             
-            return view('admin_dashboard', compact('companyCount', 'companies'));
+            return view('admin_dashboard', compact('companyCount', 'companies', 'activeCount', 'inactiveCount'));
         }
 
         // 店舗ユーザーとして分析画面を表示
@@ -179,12 +198,36 @@ class ReviewController extends Controller
         if ($myCompany->selectedSurvey) {
             foreach ($myCompany->selectedSurvey->questions as $question) {
                 if (in_array($question->type, ['radio', 'checkbox'])) {
-                    $answers = $filteredReviews->map(function($r) use ($question) {
-                        preg_match("/【{$question->question_text}】: (.*?)\n/", $r->prompt_details, $matches);
-                        return $matches[1] ?? null;
-                    })->filter()->flatMap(fn($item) => explode('、', $item));
                     
-                    $surveyStats[$question->question_text] = $answers->countBy();
+                    // ★ 修正：設問の元々の「選択肢（options）」をベースにして0件でも表示されるようにする
+                    $options = is_string($question->options) ? json_decode($question->options, true) : $question->options;
+                    $counts = [];
+                    if (is_array($options)) {
+                        foreach ($options as $opt) {
+                            $counts[$opt] = 0; // すべての選択肢をまず0回でセット
+                        }
+                    }
+
+                    // 回答データを分解してカウントアップ
+                    $filteredReviews->each(function($r) use ($question, &$counts) {
+                        if (preg_match("/【{$question->question_text}】: (.*?)\n/", $r->prompt_details, $matches)) {
+                            $answerText = $matches[1] ?? '';
+                            // チェックボックスの「A、B」を分解して個別にカウント
+                            $selectedItems = explode('、', $answerText);
+                            foreach ($selectedItems as $item) {
+                                $item = trim($item);
+                                if ($item !== '') {
+                                    if (isset($counts[$item])) {
+                                        $counts[$item]++;
+                                    } else {
+                                        $counts[$item] = 1;
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    
+                    $surveyStats[$question->question_text] = $counts;
                 }
             }
         }
@@ -193,10 +236,18 @@ class ReviewController extends Controller
         $latestReviews = \App\Models\Review::where('company_id', $myCompany->id)
                             ->latest()->take(5)->get();
 
-        // $reviewUrl = route('review.show', $myCompany->id);
+        // ★ 追加：公開中のお知らせを取得
+        // $notices = \App\Models\Notice::where('is_published', true)->latest()->take(5)->get();
+        $notices = \App\Models\Notice::with('category')
+            ->whereIn('target_role', ['all', 'company'])
+            ->latest()
+            ->take(5)
+            ->get();
+
         $reviewUrl = route('review.show', $myCompany->token);
 
-        return view('company_dashboard', compact('myCompany', 'latestReviews', 'stats', 'surveyStats', 'reviewUrl', 'filter'));
+        // ★ 修正：compactに 'notices' を追加してBladeへ渡す
+        return view('company_dashboard', compact('myCompany', 'latestReviews', 'stats', 'surveyStats', 'reviewUrl', 'filter', 'notices'));
     }
 
     // ⑤ 設定画面表示
