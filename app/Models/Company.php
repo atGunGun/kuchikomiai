@@ -23,6 +23,8 @@ class Company extends Model
         'applied_price',
         'selected_survey_id',
         'google_map_url',
+        'stripe_customer_id',
+        'stripe_subscription_id',
         'token'
     ];
     public function user()

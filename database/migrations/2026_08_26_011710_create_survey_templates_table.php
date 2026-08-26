@@ -1,0 +1,39 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('survey_templates', function (Blueprint $table) {
+            $table->id();
+
+            // 業種
+            $table->foreignId('industry_id')
+                ->constrained('industries')
+                ->onDelete('cascade');
+
+            // テンプレート名
+            $table->string('title');
+
+            // 説明
+            $table->text('description')->nullable();
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('survey_templates');
+    }
+};

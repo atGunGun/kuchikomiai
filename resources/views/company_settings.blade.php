@@ -59,10 +59,47 @@
                 </div>
 
                 <div>
-                    <label class="block mb-2 text-sm font-bold text-gray-700">Google Map URL</label>
-                    <input type="url" name="google_map_url" value="{{ $company->google_map_url ?? '' }}" 
-                           class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus-brand block w-full p-3 outline-none transition-all"
-                           placeholder="例：https://maps.google.com/...">
+                    <label class="block mb-2 text-sm font-bold text-gray-700">
+                        Google口コミURL
+                    </label>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-3">
+                        <p class="text-sm font-bold text-gray-800 mb-2">
+                            Googleの「口コミを書く」リンクを設定してください
+                        </p>
+
+                        <ol class="text-sm text-gray-700 space-y-1 list-decimal list-inside">
+                            <li>
+                                <a
+                                    href="https://business.google.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="text-blue-600 hover:text-blue-800 font-bold underline"
+                                >
+                                    Googleビジネスプロフィール
+                                </a>
+                                を開きます
+                            </li>
+                            <li>対象の店舗を選択します</li>
+                            <li>「クチコミを読む」を選択します</li>
+                            <li>「クチコミを増やす」を選択します</li>
+                            <li>表示されたリンクをコピーします</li>
+                            <li>コピーしたリンクを下の欄に貼り付けます</li>
+                        </ol>
+                    </div>
+
+                    <input
+                        type="url"
+                        name="google_map_url"
+                        value="{{ $company->google_map_url ?? '' }}"
+                        class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus-brand block w-full p-3 outline-none transition-all"
+                        placeholder="例：https://g.page/r/..."
+                    >
+
+                    <p class="mt-2 text-xs text-gray-500 font-medium">
+                        ※アンケート完了後、「このままGoogleに投稿する」を押すと、
+                        ここに設定したGoogleの口コミ投稿画面が開きます。
+                    </p>
                 </div>
 
                 <h2 class="text-lg font-bold text-gray-800 border-b pb-4 pt-4">アンケート画面メッセージ設定</h2>
@@ -95,7 +132,103 @@
                     設定を保存する
                 </button>
             </div>
+        
         </form>
+
+            {{-- プラン設定 --}}
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 space-y-6 mt-8">
+
+                <h2 class="text-lg font-bold text-gray-800 border-b pb-4">
+                    ご契約プラン
+                </h2>
+
+                {{-- 現在のプラン --}}
+                <div class="bg-green-50 border border-green-200 rounded-xl p-5">
+                    <p class="text-sm font-bold text-gray-600 mb-1">現在のプラン</p>
+
+                    @if($company->plan)
+                        <p class="text-xl font-extrabold text-green-700">
+                            {{ $company->plan->name }}
+                        </p>
+
+                        <p class="text-sm text-gray-600 mt-2">
+                            月額 {{ number_format($company->plan->base_price) }}円（税込）
+                        </p>
+                    @else
+                        <p class="text-xl font-extrabold text-gray-700">
+                            未設定
+                        </p>
+                    @endif
+                </div>
+
+                {{-- プラン一覧 --}}
+                <div>
+                    <p class="text-sm font-bold text-gray-700 mb-4">
+                        プランを変更する
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                        @foreach($plans as $plan)
+
+                            <div class="border border-gray-200 rounded-xl p-5">
+
+                                <h3 class="font-bold text-lg text-gray-800">
+                                    {{ $plan->name }}
+                                </h3>
+
+                                <p class="text-xl font-extrabold text-green-600 mt-2">
+                                    {{ number_format($plan->base_price) }}円
+                                    <span class="text-sm font-normal text-gray-500">
+                                        /月（税込）
+                                    </span>
+                                </p>
+
+                                @if($plan->description)
+                                    <p class="text-sm text-gray-500 mt-3">
+                                        {{ $plan->description }}
+                                    </p>
+                                @endif
+
+                                @if($company->plan_id == $plan->id)
+
+                                    <button
+                                        type="button"
+                                        disabled
+                                        class="mt-4 w-full bg-gray-200 text-gray-500 font-bold rounded-xl py-2 cursor-not-allowed">
+                                        現在のプラン
+                                    </button>
+
+                                @elseif($plan->base_price == 0)
+
+                                    <form action="{{ route('stripe.free-plan') }}" method="POST">
+                                        @csrf
+
+                                        <button
+                                            type="submit"
+                                            class="mt-4 w-full bg-[#0566F4] hover:bg-green-700 text-white font-bold rounded-xl py-2 transition">
+                                            無料プランに変更
+                                        </button>
+                                    </form>
+
+                                @else
+
+                                    <a
+                                        href="{{ route('stripe.checkout', $plan) }}"
+                                        class="block text-center mt-4 bg-[#0566F4] hover:bg-green-700 text-white font-bold rounded-xl py-2 transition">
+                                        このプランに変更
+                                    </a>
+
+                                @endif
+
+                            </div>
+
+                        @endforeach
+
+                    </div>
+                </div>
+
+            </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>

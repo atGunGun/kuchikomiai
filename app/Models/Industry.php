@@ -5,17 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Plan extends Model
+class Industry extends Model
 {
     use HasFactory;
 
-    // 保存を許可するカラム
     protected $fillable = [
         'name',
-        'base_price',
-        'stripe_price_id',
-        'max_surveys',
-        'max_generations',
-        'description',
     ];
+
+    /**
+     * 業種に属するテンプレート
+     */
+    public function surveyTemplates()
+    {
+        return $this->hasMany(SurveyTemplate::class);
+    }
 }

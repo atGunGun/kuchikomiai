@@ -58,11 +58,33 @@
                             </td>
                             
                             <td class="px-6 py-5 text-right space-x-3">
-                                <a href="{{ route('surveys.edit', $survey->id) }}" class="text-green-600 hover:text-green-800 font-bold px-2 py-1 transition-colors">編集</a>
-                                <form action="{{ route('surveys.destroy', $survey->id) }}" method="POST" class="inline">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" onclick="return confirm('本当に削除しますか？')" class="text-red-500 hover:text-red-700 font-bold px-2 py-1 transition-colors">削除</button>
-                                </form>
+                                <a href="{{ route('surveys.edit', $survey->id) }}"
+                                class="text-green-600 hover:text-green-800 font-bold px-2 py-1 transition-colors">
+                                    編集
+                                </a>
+
+                                @if($company->selected_survey_id === $survey->id)
+
+                                    <span class="text-gray-400 font-bold px-2 py-1">
+                                        削除不可
+                                    </span>
+
+                                @else
+
+                                    <form action="{{ route('surveys.destroy', $survey->id) }}"
+                                        method="POST"
+                                        class="inline">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit"
+                                                onclick="return confirm('本当に削除しますか？')"
+                                                class="text-red-500 hover:text-red-700 font-bold px-2 py-1 transition-colors">
+                                            削除
+                                        </button>
+                                    </form>
+
+                                @endif
                             </td>
                         </tr>
                         @empty
@@ -77,6 +99,94 @@
                 </table>
             </div>
         </div>
-        
+
+        <div class="bg-white shadow-sm sm:rounded-2xl overflow-hidden border border-gray-100">
+
+            <div class="p-6 border-b border-gray-100 bg-gray-50/50">
+                <h2 class="text-lg font-bold text-gray-800">
+                    業種別テンプレート
+                </h2>
+
+                <p class="text-sm text-gray-500 mt-1">
+                    運営が用意したテンプレートを利用して、店舗専用のアンケートを作成できます。
+                </p>
+            </div>
+
+            <div class="p-6">
+
+                @if($templates->count())
+
+                    <div class="space-y-4">
+
+                        @foreach($templates as $template)
+
+                            <div class="border border-gray-200 rounded-xl p-5">
+
+                                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                                    <div>
+
+                                        {{-- 業種 --}}
+                                        <div class="text-xs font-bold text-gray-500 mb-1">
+                                            {{ $template->industry->name }}
+                                        </div>
+
+                                        {{-- テンプレート名 --}}
+                                        <h3 class="text-lg font-bold text-gray-900">
+                                            {{ $template->title }}
+                                        </h3>
+
+                                        {{-- 説明 --}}
+                                        @if($template->description)
+                                            <p class="text-sm text-gray-600 mt-1">
+                                                {{ $template->description }}
+                                            </p>
+                                        @endif
+
+                                        {{-- 設問数 --}}
+                                        <p class="text-sm text-gray-500 mt-2">
+                                            設問数：
+                                            {{ $template->questions->count() }}
+                                        </p>
+
+                                    </div>
+
+                                    <form
+                                        method="POST"
+                                        action="{{ route('surveys.templates.use', $template) }}"
+                                        onsubmit="return confirm('このテンプレートから店舗専用アンケートを作成しますか？');"
+                                    >
+                                        @csrf
+
+                                        <button
+                                            type="submit"
+                                            class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-lg transition"
+                                        >
+                                            このテンプレートを使う
+                                        </button>
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                        @endforeach
+
+                    </div>
+
+                @else
+
+                    <div class="text-center py-8 text-gray-400">
+                        <p>
+                            現在利用できるテンプレートはありません。
+                        </p>
+                    </div>
+
+                @endif
+
+            </div>
+
+        </div>
+
     </div>
 </x-app-layout>

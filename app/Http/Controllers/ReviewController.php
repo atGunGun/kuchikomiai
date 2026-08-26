@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Review;
 use App\Models\Company;
 use App\Models\User;
+use App\Models\Plan;
 
 class ReviewController extends Controller
 {
@@ -147,115 +148,303 @@ class ReviewController extends Controller
     }
 
 // ④ ダッシュボード表示
-    public function dashboard(Request $request)
-    {
-        $user = auth()->user();
+// ④ ダッシュボード表示
+public function dashboard(Request $request)
+{
+    $user = auth()->user();
 
-        $myCompany = \App\Models\Company::where('user_id', $user->id)->first();
+    /*
+    |--------------------------------------------------------------------------
+    | 管理者ダッシュボード
+    |--------------------------------------------------------------------------
+    */
+    if ($user->role === 'admin') {
 
-        // 管理者（運営）とみなして専用画面を表示
-        if (!$myCompany) {
-            $companyCount = \App\Models\Company::count();
-            $companies = \App\Models\Company::with('agency')->latest()->get();
+        $companyCount = Company::count();
 
-            $activeCount = \App\Models\Company::whereNotNull('plan_id')->count();
-            $inactiveCount = \App\Models\Company::whereNull('plan_id')->count();
-            
-            return view('admin_dashboard', compact('companyCount', 'companies', 'activeCount', 'inactiveCount'));
-        }
-
-        // 店舗ユーザーとして分析画面を表示
-        $filter = $request->input('filter', 'this_month');
-        $query = \App\Models\Review::where('company_id', $myCompany->id);
-
-        if ($filter === 'last_month') {
-            $query->whereMonth('created_at', now()->subMonth()->month);
-        } elseif ($filter === 'last_3_months') {
-            $query->where('created_at', '>=', now()->subMonths(3));
-        } elseif ($filter === 'custom' && $request->start_date && $request->end_date) {
-            $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
-        } else { 
-            $query->whereMonth('created_at', now()->month);
-        }
-
-        $filteredReviews = $query->get();
-
-        // 分析指標の計算
-        $totalCount = $filteredReviews->count();
-        $copyCount = $filteredReviews->where('is_copied', true)->count();
-        $redirectCount = $filteredReviews->where('is_redirected', true)->count();
-        $avgDuration = $filteredReviews->avg('duration_seconds');
-
-        $stats = [
-            'total_count' => $totalCount,
-            'copy_rate' => $totalCount > 0 ? round(($copyCount / $totalCount) * 100, 1) : 0,
-            'redirect_rate' => $totalCount > 0 ? round(($redirectCount / $totalCount) * 100, 1) : 0,
-            'avg_duration' => $avgDuration ? round($avgDuration / 60, 1) : 0,
-        ];
-
-        // アンケート別・項目別集計
-        $surveyStats = [];
-        if ($myCompany->selectedSurvey) {
-            foreach ($myCompany->selectedSurvey->questions as $question) {
-                if (in_array($question->type, ['radio', 'checkbox'])) {
-                    
-                    // ★ 修正：設問の元々の「選択肢（options）」をベースにして0件でも表示されるようにする
-                    $options = is_string($question->options) ? json_decode($question->options, true) : $question->options;
-                    $counts = [];
-                    if (is_array($options)) {
-                        foreach ($options as $opt) {
-                            $counts[$opt] = 0; // すべての選択肢をまず0回でセット
-                        }
-                    }
-
-                    // 回答データを分解してカウントアップ
-                    $filteredReviews->each(function($r) use ($question, &$counts) {
-                        if (preg_match("/【{$question->question_text}】: (.*?)\n/", $r->prompt_details, $matches)) {
-                            $answerText = $matches[1] ?? '';
-                            // チェックボックスの「A、B」を分解して個別にカウント
-                            $selectedItems = explode('、', $answerText);
-                            foreach ($selectedItems as $item) {
-                                $item = trim($item);
-                                if ($item !== '') {
-                                    if (isset($counts[$item])) {
-                                        $counts[$item]++;
-                                    } else {
-                                        $counts[$item] = 1;
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    
-                    $surveyStats[$question->question_text] = $counts;
-                }
-            }
-        }
-
-        // 最新5件のみ取得
-        $latestReviews = \App\Models\Review::where('company_id', $myCompany->id)
-                            ->latest()->take(5)->get();
-
-        // ★ 追加：公開中のお知らせを取得
-        // $notices = \App\Models\Notice::where('is_published', true)->latest()->take(5)->get();
-        $notices = \App\Models\Notice::with('category')
-            ->whereIn('target_role', ['all', 'company'])
+        $companies = Company::with('agency')
             ->latest()
-            ->take(5)
             ->get();
 
-        $reviewUrl = route('review.show', $myCompany->token);
+        $activeCount = Company::whereNotNull('plan_id')->count();
 
-        // ★ 修正：compactに 'notices' を追加してBladeへ渡す
-        return view('company_dashboard', compact('myCompany', 'latestReviews', 'stats', 'surveyStats', 'reviewUrl', 'filter', 'notices'));
+        $inactiveCount = Company::whereNull('plan_id')->count();
+
+        return view('admin_dashboard', compact(
+            'companyCount',
+            'companies',
+            'activeCount',
+            'inactiveCount'
+        ));
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 店舗ダッシュボード
+    |--------------------------------------------------------------------------
+    */
+    $myCompany = Company::where('user_id', $user->id)->first();
+
+
+    // 店舗情報が存在しない場合
+    if (!$myCompany) {
+        return view('company_dashboard', [
+            'myCompany' => null,
+            'latestReviews' => collect(),
+            'stats' => [
+                'total_count' => 0,
+                'copy_rate' => 0,
+                'redirect_rate' => 0,
+                'avg_duration' => 0,
+            ],
+            'surveyStats' => [],
+            'reviewUrl' => null,
+            'filter' => 'this_month',
+            'notices' => collect(),
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | レビュー集計
+    |--------------------------------------------------------------------------
+    */
+
+    $filter = $request->input('filter', 'this_month');
+
+    $query = Review::where('company_id', $myCompany->id);
+
+    if ($filter === 'last_month') {
+
+        $query->whereMonth(
+            'created_at',
+            now()->subMonth()->month
+        );
+
+    } elseif ($filter === 'last_3_months') {
+
+        $query->where(
+            'created_at',
+            '>=',
+            now()->subMonths(3)
+        );
+
+    } elseif (
+        $filter === 'custom'
+        && $request->start_date
+        && $request->end_date
+    ) {
+
+        $query->whereBetween(
+            'created_at',
+            [
+                $request->start_date,
+                $request->end_date
+            ]
+        );
+
+    } else {
+
+        $query->whereMonth(
+            'created_at',
+            now()->month
+        );
+    }
+
+    $filteredReviews = $query->get();
+
+    /*
+    |--------------------------------------------------------------------------
+    | 分析指標
+    |--------------------------------------------------------------------------
+    */
+
+    $totalCount = $filteredReviews->count();
+
+    $copyCount = $filteredReviews
+        ->where('is_copied', true)
+        ->count();
+
+    $redirectCount = $filteredReviews
+        ->where('is_redirected', true)
+        ->count();
+
+    $avgDuration = $filteredReviews->avg('duration_seconds');
+
+    $stats = [
+        'total_count' => $totalCount,
+
+        'copy_rate' => $totalCount > 0
+            ? round(($copyCount / $totalCount) * 100, 1)
+            : 0,
+
+        'redirect_rate' => $totalCount > 0
+            ? round(($redirectCount / $totalCount) * 100, 1)
+            : 0,
+
+        'avg_duration' => $avgDuration
+            ? round($avgDuration / 60, 1)
+            : 0,
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | アンケート集計
+    |--------------------------------------------------------------------------
+    */
+
+    $surveyStats = [];
+
+    $myCompany->load('selectedSurvey.questions');
+
+    if ($myCompany->selectedSurvey) {
+
+        foreach ($myCompany->selectedSurvey->questions as $question) {
+
+            if (
+                !in_array(
+                    $question->type,
+                    ['radio', 'checkbox']
+                )
+            ) {
+                continue;
+            }
+
+            $options = is_string($question->options)
+                ? json_decode($question->options, true)
+                : $question->options;
+
+            $counts = [];
+
+            if (is_array($options)) {
+
+                foreach ($options as $option) {
+                    $counts[$option] = 0;
+                }
+            }
+
+            $filteredReviews->each(
+                function ($review) use (
+                    $question,
+                    &$counts
+                ) {
+
+                    if (
+                        preg_match(
+                            "/【" .
+                            preg_quote(
+                                $question->question_text,
+                                '/'
+                            ) .
+                            "】: (.*?)\n/",
+                            $review->prompt_details,
+                            $matches
+                        )
+                    ) {
+
+                        $answerText = $matches[1] ?? '';
+
+                        $selectedItems = explode(
+                            '、',
+                            $answerText
+                        );
+
+                        foreach ($selectedItems as $item) {
+
+                            $item = trim($item);
+
+                            if ($item === '') {
+                                continue;
+                            }
+
+                            if (isset($counts[$item])) {
+                                $counts[$item]++;
+                            } else {
+                                $counts[$item] = 1;
+                            }
+                        }
+                    }
+                }
+            );
+
+            $surveyStats[
+                $question->question_text
+            ] = $counts;
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | 最新レビュー
+    |--------------------------------------------------------------------------
+    */
+
+    $latestReviews = Review::where(
+        'company_id',
+        $myCompany->id
+    )
+        ->latest()
+        ->take(5)
+        ->get();
+
+    /*
+    |--------------------------------------------------------------------------
+    | お知らせ
+    |--------------------------------------------------------------------------
+    */
+
+    $notices = \App\Models\Notice::with('category')
+        ->whereIn(
+            'target_role',
+            ['all', 'company']
+        )
+        ->latest()
+        ->take(5)
+        ->get();
+
+    /*
+    |--------------------------------------------------------------------------
+    | 口コミフォームURL
+    |--------------------------------------------------------------------------
+    */
+
+    $reviewUrl = route(
+        'review.show',
+        $myCompany->token
+    );
+
+    /*
+    |--------------------------------------------------------------------------
+    | 店舗ダッシュボード
+    |--------------------------------------------------------------------------
+    */
+
+    return view(
+        'company_dashboard',
+        compact(
+            'myCompany',
+            'latestReviews',
+            'stats',
+            'surveyStats',
+            'reviewUrl',
+            'filter',
+            'notices'
+        )
+    );
+}
 
     // ⑤ 設定画面表示
     public function showSettings()
     {
         $company = Company::where('user_id', auth()->id())->first();
-        if (!$company) return "店舗データなし";
-        return view('company_settings', compact('company'));
+
+        if (!$company) {
+            return "店舗データなし";
+        }
+
+        $plans = Plan::orderBy('base_price')->get();
+
+        return view('company_settings', compact('company', 'plans'));
     }
 
     // ⑥ 設定更新

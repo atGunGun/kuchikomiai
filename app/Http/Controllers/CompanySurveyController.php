@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use App\Models\Company;
 use App\Models\Survey;
 use App\Models\Question;
-use Illuminate\Http\Request;
+use App\Models\SurveyTemplate;
+use Illuminate\Support\Facades\DB;
 
 class CompanySurveyController extends Controller
 {
@@ -12,8 +15,21 @@ class CompanySurveyController extends Controller
     public function index()
     {
         $company = auth()->user()->company;
-        $surveys = Survey::where('company_id', $company->id)->latest()->get();
-        return view('surveys.index', compact('surveys', 'company'));
+
+        $surveys = Survey::where('company_id', $company->id)
+            ->latest()
+            ->get();
+
+        // 管理者が作成した業種別テンプレートを取得
+        $templates = SurveyTemplate::with(['industry', 'questions'])
+            ->orderBy('industry_id')
+            ->orderBy('title')
+            ->get();
+
+        return view(
+            'surveys.index',
+            compact('surveys', 'company', 'templates')
+        );
     }
 
     // 2. アンケート作成画面
@@ -77,13 +93,25 @@ class CompanySurveyController extends Controller
     // 4. アンケートの削除処理（★ここが追加された部分です）
     public function destroy(Survey $survey)
     {
-        // 他社のアンケートを勝手に消せないようにする安全対策
-        if ($survey->company_id !== auth()->user()->company->id) {
+        $company = auth()->user()->company;
+
+        // 他社のアンケートを削除できないようにする
+        if ($survey->company_id !== $company->id) {
             abort(403);
         }
-        
+
+        // 現在使用中のアンケートは削除禁止
+        if ($company->selected_survey_id === $survey->id) {
+            return redirect()
+                ->route('surveys.index')
+                ->with('error', '現在使用中のアンケートは削除できません。');
+        }
+
         $survey->delete();
-        return redirect()->route('surveys.index')->with('success', 'アンケートを削除しました。');
+
+        return redirect()
+            ->route('surveys.index')
+            ->with('success', 'アンケートを削除しました。');
     }
     // 5. 編集画面の表示
     public function edit(Survey $survey)
@@ -148,4 +176,70 @@ class CompanySurveyController extends Controller
 
         return back()->with('success', '「' . $survey->title . '」を店頭用アンケートに設定しました！');
     }
+
+    /**
+ * 業種別テンプレートを店舗専用アンケートとしてコピーする
+ */
+public function useTemplate(SurveyTemplate $template)
+{
+    $user = auth()->user();
+
+    // 店舗ユーザー自身の会社だけを取得
+    $company = Company::where('user_id', $user->id)->firstOrFail();
+
+    // プラン確認
+    $plan = $company->plan;
+
+    if (!$plan) {
+        return redirect()
+            ->route('surveys.index')
+            ->with('error', '現在プランが設定されていないため、アンケートを作成できません。');
+    }
+
+    // 現在のアンケート数を確認
+    $currentCount = Survey::where('company_id', $company->id)->count();
+
+    // 作成上限チェック
+    if (!is_null($plan->max_surveys) && $currentCount >= $plan->max_surveys) {
+        return redirect()
+            ->route('surveys.index')
+            ->with(
+                'error',
+                'アンケートの作成上限（' . $plan->max_surveys . '個）に達しています。'
+            );
+    }
+
+    // テンプレートと設問を取得
+    $template->load('questions');
+
+    DB::transaction(function () use ($template, $company) {
+
+        $survey = Survey::create([
+            'company_id' => $company->id,
+            'title' => $template->title,
+            'description' => $template->description,
+        ]);
+
+        foreach ($template->questions as $templateQuestion) {
+
+            Question::create([
+                'survey_id' => $survey->id,
+                'question_text' => $templateQuestion->question_text,
+                'type' => $templateQuestion->type,
+                'options' => $templateQuestion->options,
+                'is_required' => $templateQuestion->is_required,
+                'sort_order' => $templateQuestion->sort_order,
+            ]);
+        }
+
+        // 作成したアンケートを使用中にする
+        $company->update([
+            'selected_survey_id' => $survey->id,
+        ]);
+    });
+
+    return redirect()
+        ->route('surveys.index')
+        ->with('success', 'テンプレートからアンケートを作成しました。');
+}
 }

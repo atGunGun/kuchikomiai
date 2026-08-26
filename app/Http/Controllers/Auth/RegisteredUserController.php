@@ -48,7 +48,7 @@ class RegisteredUserController extends Controller
             'user_id' => $user->id,
             'name' => $request->name, // 最初はユーザー名を会社名にする
             'agency_id' => $request->agency_id, // URLに aid があれば入る。なければnull
-            'plan_id' => 1, // デフォルトプランID（適宜変更してください）
+            'plan_id' => 4, // デフォルトプランID（適宜変更してください）
             'applied_price' => 0, // 最初は0か、プラン定価を入れる
         ]);
 

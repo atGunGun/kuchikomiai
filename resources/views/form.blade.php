@@ -182,8 +182,13 @@
                 
                 {{-- 送信ボタン --}}
                 <div class="mt-12">
-                    <button type="submit" class="w-full text-white bg-brand btn-submit font-extrabold rounded-2xl text-lg px-5 py-4 shadow-lg transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
-                        <span class="text-2xl">✨</span> AIで口コミを作成する
+                    <button
+                        type="submit"
+                        id="generate-button"
+                        class="w-full text-white bg-brand btn-submit font-extrabold rounded-2xl text-lg px-5 py-4 shadow-lg transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2"
+                    >
+                        <span class="text-2xl" id="generate-icon">✨</span>
+                        <span id="generate-button-text">AIで口コミを作成する</span>
                     </button>
                     <p class="text-xs text-center text-gray-400 mt-4 font-medium">※AIの生成には10〜15秒ほどかかる場合があります</p>
                 </div>
@@ -200,4 +205,52 @@
             document.getElementById('duration_seconds').value = durationSeconds;
         });
     </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const form = document.getElementById('survey-form');
+        const button = document.getElementById('generate-button');
+        const buttonText = document.getElementById('generate-button-text');
+        const buttonIcon = document.getElementById('generate-icon');
+
+        if (!form || !button) {
+            return;
+        }
+
+        let isSubmitting = false;
+
+        form.addEventListener('submit', function (event) {
+
+            // すでに送信中なら完全にキャンセル
+            if (isSubmitting) {
+                event.preventDefault();
+                return;
+            }
+
+            // 送信中フラグ
+            isSubmitting = true;
+
+            // ボタンを無効化
+            button.disabled = true;
+
+            // ボタンを完全に操作不能にする
+            button.style.pointerEvents = 'none';
+
+            // 見た目を変更
+            button.classList.add(
+                'opacity-70',
+                'cursor-not-allowed'
+            );
+
+            button.classList.remove('hover:-translate-y-1');
+
+            // 文言を変更
+            buttonText.textContent = '口コミを作成しています...';
+            buttonIcon.textContent = '⏳';
+
+        }, true);
+
+    });
+</script>
 </x-app-layout>
