@@ -138,7 +138,7 @@ public function freePlan()
     }
 
     // すでに無料プランの場合
-    if ($company->plan_id == 4) {
+    if ($company->plan_id == 1) {
         return redirect()
             ->route('settings.edit')
             ->with('error', 'すでに無料プランです。');
@@ -151,13 +151,19 @@ public function freePlan()
 
         try {
 
-            \Stripe\Subscription::cancel(
+            $stripe = new \Stripe\StripeClient(
+                config('services.stripe.secret')
+            );
+
+            $stripe->subscriptions->cancel(
                 $company->stripe_subscription_id
             );
 
-            // 実際のDB更新はWebhook
-            // customer.subscription.deleted
-            // に任せる
+            $company->update([
+                'plan_id' => 1,
+                'applied_price' => 0,
+                'stripe_subscription_id' => null,
+            ]);
 
         } catch (\Exception $e) {
 
@@ -176,7 +182,7 @@ public function freePlan()
 
         // Stripe契約が存在しない場合は直接無料プランへ
         $company->update([
-            'plan_id' => 4,
+            'plan_id' => 1,
             'applied_price' => 0,
             'stripe_subscription_id' => null,
         ]);
@@ -184,7 +190,7 @@ public function freePlan()
 
     return redirect()
         ->route('settings.edit')
-        ->with('success', '無料プランへの変更処理を開始しました。');
+        ->with('success', '無料プランに変更しました。');
 }
 
 /**
@@ -321,7 +327,7 @@ public function webhook(Request $request)
 
         // 無料プランへ戻す
         $company->update([
-            'plan_id' => 4,
+            'plan_id' => 1,
             'applied_price' => 0,
             'stripe_subscription_id' => null,
         ]);
@@ -329,7 +335,7 @@ public function webhook(Request $request)
         Log::info('Stripe Webhook: サブスクリプション解約処理完了', [
             'company_id' => $company->id,
             'stripe_subscription_id' => $subscription->id,
-            'plan_id' => 4,
+            'plan_id' => 1,
         ]);
     }
 
