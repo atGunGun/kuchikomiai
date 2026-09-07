@@ -63,6 +63,15 @@ class Company extends Model
 
         return $this->plan;
     }
+    public function effectivePlanCode(): ?string
+    {
+        return $this->effectivePlan()?->code;
+    }
+
+    public function hasEffectivePlan(string $code): bool
+    {
+        return $this->effectivePlanCode() === $code;
+    }
     public function selectedSurvey()
     {
         // 企業は1つの「選ばれたアンケート」を持つ
