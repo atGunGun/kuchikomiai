@@ -8,6 +8,7 @@ use App\Models\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class AdminCompanyController extends Controller
 {
@@ -77,9 +78,16 @@ class AdminCompanyController extends Controller
         if (auth()->user()->role !== 'admin') abort(403);
 
         $agencies = User::where('role', 'agency')->get();
-        $plans = Plan::all();
 
-        return view('admin.companies_edit', compact('company', 'agencies', 'plans'));
+        $plans = Plan::whereIn('code', ['free', 'standard', 'premium'])
+            ->orderBy('base_price')
+            ->get();
+
+        $demoPlans = Plan::whereIn('code', ['standard', 'premium'])
+            ->orderBy('base_price')
+            ->get();
+
+        return view('admin.companies_edit', compact('company', 'agencies', 'plans', 'demoPlans'));
     }
 
     // 企業の更新処理
@@ -92,6 +100,13 @@ class AdminCompanyController extends Controller
             'company_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $company->user_id,
             'plan_id' => 'required|exists:plans,id',
+            'demo_plan_id' => [
+                'nullable',
+                Rule::exists('plans', 'id')->where(function ($query) {
+                    $query->whereIn('code', ['standard', 'premium']);
+                }),
+            ],
+            'demo_expires_at' => 'nullable|date',
         ]);
 
         try {
@@ -118,6 +133,10 @@ class AdminCompanyController extends Controller
                     'agency_id' => $request->agency_id ?: null,
                     'plan_id' => $plan->id,
                     'applied_price' => $appliedPrice,
+                    'demo_plan_id' => $request->demo_plan_id ?: null,
+                    'demo_expires_at' => $request->filled('demo_plan_id')
+                        ? ($request->demo_expires_at ?: null)
+                        : null,
                 ]);
             });
 

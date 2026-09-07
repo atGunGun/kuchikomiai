@@ -73,6 +73,40 @@
             <input type="number" name="applied_price" value="{{ old('applied_price', $company->applied_price) }}" min="0">
         </div>
 
+        <hr>
+
+        <h3>3. デモプラン設定</h3>
+
+        <div>
+            <label>デモプラン:</label>
+            <select name="demo_plan_id">
+                <option value="">なし（実契約プランを使用）</option>
+
+                @foreach ($demoPlans as $demoPlan)
+                    <option
+                        value="{{ $demoPlan->id }}"
+                        {{ old('demo_plan_id', $company->demo_plan_id) == $demoPlan->id ? 'selected' : '' }}
+                    >
+                        {{ $demoPlan->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div>
+            <label>デモ終了日時:</label>
+            <input
+                type="datetime-local"
+                name="demo_expires_at"
+                value="{{ old('demo_expires_at', $company->demo_expires_at?->format('Y-m-d\TH:i')) }}"
+            >
+            <small>空欄の場合は無期限です。</small>
+        </div>
+
+        <p>
+            ※ デモプランを設定しても実契約プランや請求情報は変更されません。
+        </p>
+
         <br>
         <button type="submit">情報を更新する</button>
     </form>

@@ -1,5 +1,33 @@
 <x-app-layout>
     <div class="space-y-8">
+                @if(
+            $myCompany &&
+            $myCompany->demo_plan_id &&
+            (is_null($myCompany->demo_expires_at) || $myCompany->demo_expires_at->isFuture())
+        )
+            <div class="bg-blue-50 border border-blue-200 rounded-2xl p-5 shadow-sm">
+                <p class="text-blue-800 font-bold text-lg">
+                    デモ利用中：{{ $myCompany->effectivePlan()?->name }}
+                </p>
+
+                <p class="text-blue-700 text-sm mt-2">
+                    現在、{{ $myCompany->effectivePlan()?->name }}の機能をデモとしてご利用いただけます。
+                </p>
+
+                <p class="text-blue-800 font-bold text-sm mt-2">
+                    デモ利用期限：
+                    @if($myCompany->demo_expires_at)
+                        {{ $myCompany->demo_expires_at->format('Y年n月j日 H:i') }}まで
+                    @else
+                        無期限
+                    @endif
+                </p>
+
+                <p class="text-blue-600 text-xs mt-2">
+                    ※ 実際の契約プラン・請求内容は変更されません。
+                </p>
+            </div>
+        @endif
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
             <h1 class="text-xl font-bold text-gray-800 flex items-center"><span class="mr-2"><img src="/img/top_aicon01.svg" alt="" class="h-10"></span>分析ダッシュボード</h1>
             <form action="{{ route('dashboard') }}" method="GET" class="flex flex-wrap items-center gap-3">
