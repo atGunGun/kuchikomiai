@@ -137,8 +137,10 @@ public function freePlan()
             ->with('error', '店舗情報が見つかりませんでした。');
     }
 
+    $freePlan = Plan::where('code', 'free')->firstOrFail();
+
     // すでに無料プランの場合
-    if ($company->plan_id == 1) {
+    if ($company->plan_id === $freePlan->id) {
         return redirect()
             ->route('settings.edit')
             ->with('error', 'すでに無料プランです。');
@@ -160,8 +162,8 @@ public function freePlan()
             );
 
             $company->update([
-                'plan_id' => 1,
-                'applied_price' => 0,
+                'plan_id' => $freePlan->id,
+                'applied_price' => $freePlan->base_price,
                 'stripe_subscription_id' => null,
             ]);
 
@@ -182,8 +184,8 @@ public function freePlan()
 
         // Stripe契約が存在しない場合は直接無料プランへ
         $company->update([
-            'plan_id' => 1,
-            'applied_price' => 0,
+            'plan_id' => $freePlan->id,
+            'applied_price' => $freePlan->base_price,
             'stripe_subscription_id' => null,
         ]);
     }
@@ -325,17 +327,19 @@ public function webhook(Request $request)
             ], 404);
         }
 
+        $freePlan = Plan::where('code', 'free')->firstOrFail();
+
         // 無料プランへ戻す
         $company->update([
-            'plan_id' => 1,
-            'applied_price' => 0,
+            'plan_id' => $freePlan->id,
+            'applied_price' => $freePlan->base_price,
             'stripe_subscription_id' => null,
         ]);
 
         Log::info('Stripe Webhook: サブスクリプション解約処理完了', [
             'company_id' => $company->id,
             'stripe_subscription_id' => $subscription->id,
-            'plan_id' => 1,
+            'plan_id' => $freePlan->id,
         ]);
     }
 

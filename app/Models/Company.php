@@ -19,13 +19,18 @@ class Company extends Model
         'welcome_message',
         'theme_color',
         'completion_message',
-        'plan_id',      
+        'plan_id',
+        'demo_plan_id',
+        'demo_expires_at',
         'applied_price',
         'selected_survey_id',
         'google_map_url',
         'stripe_customer_id',
         'stripe_subscription_id',
         'token'
+    ];
+    protected $casts = [
+        'demo_expires_at' => 'datetime',
     ];
     public function user()
     {
@@ -41,6 +46,22 @@ class Company extends Model
     public function plan()
     {
         return $this->belongsTo(Plan::class);
+    }
+    public function demoPlan()
+    {
+        return $this->belongsTo(Plan::class, 'demo_plan_id');
+    }
+
+    public function effectivePlan()
+    {
+        if (
+            $this->demo_plan_id &&
+            (is_null($this->demo_expires_at) || $this->demo_expires_at->isFuture())
+        ) {
+            return $this->demoPlan;
+        }
+
+        return $this->plan;
     }
     public function selectedSurvey()
     {

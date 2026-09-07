@@ -36,7 +36,7 @@ class CompanySurveyController extends Controller
     public function create()
     {
         $company = auth()->user()->company;
-        $plan = $company->plan;
+        $plan = $company->effectivePlan();
         
         if (!$plan) {
             return redirect()->route('surveys.index')->with('error', '現在プランが設定されていないため、アンケートを作成できません。運営にお問い合わせください。');
@@ -188,7 +188,7 @@ public function useTemplate(SurveyTemplate $template)
     $company = Company::where('user_id', $user->id)->firstOrFail();
 
     // プラン確認
-    $plan = $company->plan;
+    $plan = $company->effectivePlan();
 
     if (!$plan) {
         return redirect()

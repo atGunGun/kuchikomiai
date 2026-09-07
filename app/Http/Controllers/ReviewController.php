@@ -55,15 +55,21 @@ class ReviewController extends Controller
         // ==========================================
         // ★ 新規追加：プランの生成回数（今月）の上限チェック
         // ==========================================
-        if ($company->plan && $company->plan->max_generations > 0) {
-            // この店舗の「今月」の生成回数をカウント
+        $plan = $company->effectivePlan();
+
+        if ($plan && !is_null($plan->max_reviews_monthly)) {
             $currentMonthCount = \App\Models\Review::where('company_id', $company->id)
-                                    ->whereMonth('created_at', now()->month)
-                                    ->count();
-                                    
-            if ($currentMonthCount >= $company->plan->max_generations) {
-                // 上限に達していたらエラーメッセージと共に前の画面に戻す
-                return back()->with('error', 'この店舗は今月のAI生成上限（' . $company->plan->max_generations . '回）に達しているため、これ以上作成できません。')->withInput();
+                ->whereYear('created_at', now()->year)
+                ->whereMonth('created_at', now()->month)
+                ->count();
+
+            if ($currentMonthCount >= $plan->max_reviews_monthly) {
+                return back()
+                    ->with(
+                        'error',
+                        'この店舗は今月の口コミ利用上限（' . $plan->max_reviews_monthly . '件）に達しているため、これ以上作成できません。'
+                    )
+                    ->withInput();
             }
         }
         // ==========================================
