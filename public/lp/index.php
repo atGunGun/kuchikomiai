@@ -1,3 +1,7 @@
+<?php
+header('Location: /', true, 301);
+exit;
+?>
 <!DOCTYPE html>
 <html lang="ja" dir="ltr">
 <head>
