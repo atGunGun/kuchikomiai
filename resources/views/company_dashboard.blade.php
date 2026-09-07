@@ -120,7 +120,13 @@
                     <div class="bg-white p-4 rounded-xl border border-gray-100 inline-block mb-4">
                         {!! QrCode::size(150)->generate($reviewUrl) !!}
                     </div>
-                    <input type="text" readonly value="{{ $reviewUrl }}" class="w-full text-xs p-2 bg-gray-50 border-gray-200 rounded-lg text-center">
+
+                    <input type="text" readonly value="{{ $reviewUrl }}" class="w-full text-xs p-2 bg-gray-50 border-gray-200 rounded-lg text-center mb-4">
+
+                    <a href="{{ route('company.qr.download') }}"
+                    class="inline-flex items-center justify-center px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition">
+                        QRコードをダウンロード（PNG）
+                    </a>
                 </div>
             </div>
         </div>

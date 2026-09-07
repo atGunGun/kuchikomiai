@@ -106,12 +106,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/reviews', [ReviewController::class, 'index'])
         ->name('reviews.index');
 
+    /*
+    |--------------------------------------------------------------------------
+    | QRコードダウンロード
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/qr/download', [ReviewController::class, 'downloadQr'])
+        ->name('company.qr.download');
 
     /*
     |--------------------------------------------------------------------------
     | アンケート管理（店舗）
     |--------------------------------------------------------------------------
     */
+
+    Route::get('/surveys', [CompanySurveyController::class, 'index'])
+        ->name('surveys.index');
 
     Route::get('/surveys', [CompanySurveyController::class, 'index'])
         ->name('surveys.index');

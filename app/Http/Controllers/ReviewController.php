@@ -8,6 +8,7 @@ use App\Models\Review;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\Plan;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ReviewController extends Controller
 {
@@ -502,4 +503,30 @@ public function dashboard(Request $request)
 
         return response()->json(['status' => 'success']);
     }
+
+    // QRダウンロード
+    public function downloadQr()
+    {
+        $user = auth()->user();
+
+        $company = Company::where('user_id', $user->id)->firstOrFail();
+
+        $reviewUrl = route('review.show', $company->token);
+
+        $png = (string) QrCode::format('png')
+            ->size(500)
+            ->margin(2)
+            ->generate($reviewUrl);
+
+        return response()->streamDownload(
+            function () use ($png) {
+                echo $png;
+            },
+            'review_qr.png',
+            [
+                'Content-Type' => 'image/png',
+            ]
+        );
+    }
+
 }
