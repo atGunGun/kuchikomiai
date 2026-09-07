@@ -1692,7 +1692,15 @@ footer .flex .right{
 
 .ft_list1{
 	display:flex;
-	justify-content:space-between;
+	justify-content: flex-end;
+}
+
+.ft_list1 li:first-child{
+	margin-left:0;
+}
+
+.ft_list1 li{
+	margin-left:auto;
 }
 
 .ft_list1 li a{
@@ -1704,16 +1712,20 @@ footer .flex .right{
 	display:flex;
 	align-items:center;
 	margin-top:31px;
-	justify-content:space-between;
+	justify-content:flex-end;
 	max-width:317px;
 	width:100%;
 	margin-left:auto;
 }
 
+.btn_list1 li:first-child{
+	margin-left:0;
+}
 
 .btn_list1 li{
 	max-width: 151px;
 	width:48%;
+	margin-left:auto;
 }
 
 .btn_list1 li a{
@@ -3478,6 +3490,8 @@ table {
 	flex-wrap:wrap;
 	max-width: 317px;
 	margin: 0 auto;
+	justify-content: center;
+	text-align: center;
 }
 
 .ft_list1 li{

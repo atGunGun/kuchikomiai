@@ -1,138 +1,23 @@
-<!DOCTYPE html>
-<html lang="ja" dir="ltr">
-<head>
-<meta charset="UTF-8">
-<title>Coel</title>
+﻿@extends('lp.layouts.app')
 
-<!-- 表示ファイルはこちら C:\Users\k-tak\Herd\kuchikomiai\resources\views\lp\index.blade.php -->
-
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<meta name="format-detection" content="telephone=no">
-<meta name="keywords" content=",,,">
-<meta name="description" content="ディスクリプション">
-
-<!--▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△-->
-<meta name="robots" content="noindex,nofollow"><!-- 本アップ前に必ず外す -->
-<!--▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△▼△-->
-
-<!-- OGP -->
-<meta property="og:type" content="website"><!-- トップページであれば「website」-->
-<meta property="og:title" content="Coel"><!-- titleと文字数も揃える -->
-<meta property="og:site_name" content="Coel"><!-- サイト名 -->
-<meta property="og:url" content="">
-<meta property="og:image" content=""><!-- 1200x630推奨 -->
-<meta property="og:description" content="ディスクリプション">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="./css/default.css">
-<link rel="stylesheet" href="./css/style.css" media="screen,print">
-<link rel="stylesheet" href="./css/slick-theme.css" media="screen,print">
-<link rel="stylesheet" href="./css/slick.css" media="screen,print">
-
-<link rel="shortcut icon" href="./img/common/favicon.png">
-<link rel="icon" type="image/png" href="./img/common/favicon.png">
-<link rel="apple-touch-icon-precomposed" href="./img/common/apple-touch-icon-152x152.png">
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="./js/slick.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.6/ScrollMagic.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
-
-
-<!--[if lt IE 9]>
-<script src="./js/html5.js"></script>
-<script src="./js/css3-mediaqueries.js"></script>
-<![endif]-->
-
-</head>
-
-
-
-<body id="pTop" class="website">
-
-
-<!-- header -->
-<header>
-	<div class="hLogo">
-		<a href="./">
-			<h1 class="title"><img src="./img/common/logo.svg" alt="Coel"></h1>
-		</a>
-	</div>
-	<ul class="headerUl">
-		<li class="menuBtn sp">
-			<div class="menu-trigger">
-				<span></span>
-				<span></span>
-				<span></span>
-			</div>
-
-			<nav class="gnav">
-				<div class="gnav__wrap">
-					<ul class="gnav__menu f700">
-						<li class="gnav__menu__item"><a href="./">TOP</a></li>
-						<li class="gnav__menu__item"><a href="./about.html">Coel (コエル)について</a></li>
-						<li class="gnav__menu__item"><a href="./plan.html">料金プラン</a></li>
-						<li class="gnav__menu__item"><a href="./column.html">コラム</a></li>
-						<li class="gnav__menu__item"><a href="./agents.html">代理店募集</a></li>
-						<li class="gnav__menu__item2">
-							<div class="hd_link">
-								<a href="./login.html" class="hd_link_btn1 bgwh">
-									ログイン
-								</a>
-								<a href="./contact.html" class="hd_link_btn1 bgblu white">
-									ご利用申請
-								</a>
-							</div>
-						</li>
-					</ul>
-				</div><!--gnav-wrap-->
-			</nav>
-		</li>
-	</ul>
-	
-	<!-- nav -->
-	<div class="pc_nav">
-		<ul class="nav_list1">
-			<li><a href="./about.html">Coel (コエル)について</a></li>
-			<li><a href="./plan.html">料金プラン</a></li>
-			<li><a href="./column.html">コラム</a></li>
-			<li><a href="./agents.html">代理店募集</a></li>
-		</ul>
-		<div class="hd_link">
-			<a href="./login.html" class="hd_link_btn1 bgwh">
-				ログイン
-			</a>
-			<a href="./contact.html" class="hd_link_btn1 bgblu white">
-				ご利用申請
-			</a>
-		</div>
-	</div>
-	<!-- /nav -->
-</header><!-- /header -->
-
-
-
+@section('content')
 
 <!-- cover -->
 <div id="cover" class="mv_point">
-	<div class="bg_sou1"><img src="./img/top/mv_sou1.svg" alt=""></div>
-	<div class="bg_sou2"><img src="./img/top/mv_sou2.svg" alt=""></div>
-	<div class="bg_sou3"><img src="./img/top/mv_sou3.svg" alt=""></div>
-	<div class="bg_sou4"><img src="./img/top/mv_sou4.svg" alt=""></div>
-	<div class="bg_sou5"><img src="./img/top/mv_sou5.svg" alt=""></div>
+	<div class="bg_sou1"><img src="{{ asset('lp/img/' ) }}/top/mv_sou1.svg" alt=""></div>
+	<div class="bg_sou2"><img src="{{ asset('lp/img/' ) }}/top/mv_sou2.svg" alt=""></div>
+	<div class="bg_sou3"><img src="{{ asset('lp/img/' ) }}/top/mv_sou3.svg" alt=""></div>
+	<div class="bg_sou4"><img src="{{ asset('lp/img/' ) }}/top/mv_sou4.svg" alt=""></div>
+	<div class="bg_sou5"><img src="{{ asset('lp/img/' ) }}/top/mv_sou5.svg" alt=""></div>
 	<div class="text_area">
 		<p class="text1"><span>あっというまに<span>口コミ</span>が増える！</span></p>
-		<h2 class="title1"><img src="./img/top/mv_tit.svg" alt="簡単アンケートが口コミに変わる"></h2>
+		<h2 class="title1"><img src="{{ asset('lp/img/' ) }}/top/mv_tit.svg" alt="簡単アンケートが口コミに変わる"></h2>
 		<p class="text2">AIによる文章生成サポート</p>
-		<a href="./contact.html" class="mv_bnr1">
-			<div class="mv_btn_img"><img src="./img/top/mv_btn.svg" alt=""></div>
+		<a href="{{ url('/register') }}" class="mv_bnr1">
+			<div class="mv_btn_img"><img src="{{ asset('lp/img/' ) }}/top/mv_btn.svg" alt=""></div>
 			<p class="btn1_text1 white">
 				<span class="yellow">まずは無料でお試し！</span>
-				ご利用申請はこちら
+				新規登録はこちら
 			</p>
 			<p class="btn1_text2 bgyel blue">無料</p>
 		</a>
@@ -154,8 +39,8 @@
 			<!-- Slick -->
 			<div class="img_slider">
 	
-				<div><img src="./img/top/mv_sld1.jpg" alt=""></div>
-				<div><img src="./img/top/mv_sld2.jpg" alt=""></div>
+				<div><img src="{{ asset('lp/img/' ) }}/top/mv_sld1.jpg" alt=""></div>
+				<div><img src="{{ asset('lp/img/' ) }}/top/mv_sld2.jpg" alt=""></div>
 	
 			</div>
 	
@@ -163,15 +48,15 @@
 	
 		<!-- 装飾 -->
 		<div class="mv_img_sou1">
-			<img src="./img/top/mv_img_sou1.png" alt="">
+			<img src="{{ asset('lp/img/' ) }}/top/mv_img_sou1.png" alt="">
 		</div>
 	
 		<div class="mv_img_sou2">
-			<img src="./img/top/mv_img_sou2.png" alt="">
+			<img src="{{ asset('lp/img/' ) }}/top/mv_img_sou2.png" alt="">
 		</div>
 	
 		<div class="mv_img_sou3">
-			<img src="./img/top/mv_img_sou3.png" alt="">
+			<img src="{{ asset('lp/img/' ) }}/top/mv_img_sou3.png" alt="">
 		</div>
 	
 	</div>
@@ -182,8 +67,8 @@
 <div id="main">
 	<section class="content01">
 		<div class="ma1920">
-			<div class="sou1"><img src="./img/top/co1_sou1.svg" alt=""></div>
-			<div class="sou2"><img src="./img/top/co1_sou2.svg" alt=""></div>
+			<div class="sou1"><img src="{{ asset('lp/img/' ) }}/top/co1_sou1.svg" alt=""></div>
+			<div class="sou2"><img src="{{ asset('lp/img/' ) }}/top/co1_sou2.svg" alt=""></div>
 			<div class="inner">
 				<h2 class="mainTit">
 					たったこれだけで<br class="sp2">口コミができる！
@@ -191,7 +76,7 @@
 				</h2>
 				<ul class="co1_list1">
 					<li class="cont">
-						<div class="img"><img src="./img/top/co11_1.png" alt="icon"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co11_1.png" alt="icon"></div>
 						<h3 class="title1 green">QRを読み込む</h3>
 						<p class="text1">
 							QRを読み込むだけで<br>
@@ -199,7 +84,7 @@
 						</p>
 					</li>
 					<li class="cont">
-						<div class="img"><img src="./img/top/co11_2.png" alt="icon"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co11_2.png" alt="icon"></div>
 						<h3 class="title1 green">アンケートに回答</h3>
 						<p class="text1">
 							アンケートに回答するだけで<br>
@@ -207,7 +92,7 @@
 						</p>
 					</li>
 					<li class="cont">
-						<div class="img"><img src="./img/top/co11_3.png" alt="icon"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co11_3.png" alt="icon"></div>
 						<h3 class="title1 green">口コミ完成！</h3>
 						<p class="text1">
 							できあがった文章を投稿するだけ！<br>
@@ -222,7 +107,7 @@
 					<div class="text_area">
 						<h3 class="title1">
 							<span class="sub">Coelとは</span>
-							<span class="tit"><img src="./img/top/co12_tit.svg" alt="お客様は選ぶだけ。口コミ投稿をもっと簡単に。"></span>
+							<span class="tit"><img src="{{ asset('lp/img/' ) }}/top/co12_tit.svg" alt="お客様は選ぶだけ。口コミ投稿をもっと簡単に。"></span>
 						</h3>
 						<p class="text1">
 							Coelは、AIを活用した口コミ作成サポートサービスです。<br>
@@ -234,7 +119,7 @@
 							口コミ投稿のハードルを下げることで、店舗の口コミ獲得を支援します。
 						</p>
 					</div>
-					<div class="img"><img src="./img/top/co12_1.png" alt=""></div>
+					<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co12_1.png" alt=""></div>
 				</div>
 			</div>
 		</div>
@@ -248,27 +133,27 @@
 				</h2>
 				<ul class="co2_list1">
 					<li>
-						<div class="img"><img src="./img/top/co21_1.svg" alt="icon"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co21_1.svg" alt="icon"></div>
 						<p class="text1">
 							口コミの数が少ない<br>
 							増えない
 						</p>
 					</li>
 					<li>
-						<div class="img"><img src="./img/top/co21_2.svg" alt="icon"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co21_2.svg" alt="icon"></div>
 						<p class="text1">
 							口コミの内容が簡素で<br>
 							魅力が伝わらない
 						</p>
 					</li>
 					<li>
-						<div class="img"><img src="./img/top/co21_3.svg" alt="icon"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co21_3.svg" alt="icon"></div>
 						<p class="text1">
 							口コミが管理できていない
 						</p>
 					</li>
 					<li>
-						<div class="img"><img src="./img/top/co21_4.svg" alt="icon"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co21_4.svg" alt="icon"></div>
 						<p class="text1">
 							口コミは欲しいけど<br>
 							お客様に面倒をかけたくない
@@ -277,14 +162,14 @@
 				</ul>
 			</div>
 			<div class="co2_div2">
-				<div class="dot1"><img src="./img/top/co2_dot1.svg" alt="dot"></div>
+				<div class="dot1"><img src="{{ asset('lp/img/' ) }}/top/co2_dot1.svg" alt="dot"></div>
 				<p class="text1">その悩み、口コミを書く<br class="sp">“ハードル”が原因かもしれません。</p>
-				<div class="dot2"><img src="./img/top/co2_dot2.svg" alt="dot"></div>
+				<div class="dot2"><img src="{{ asset('lp/img/' ) }}/top/co2_dot2.svg" alt="dot"></div>
 				<h3 class="title1">
 					<span class="green">Coelなら、お客様は選ぶだけ。</span>
 					AIが自然な口コミ文に整えます。
 				</h3>
-				<div class="img"><img src="./img/top/co22_2.png" alt="CoelはAI技術を使って、魅力的な口コミの作成をサポート"></div>
+				<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co22_2.png" alt="CoelはAI技術を使って、魅力的な口コミの作成をサポート"></div>
 				<p class="text2">
 					お客様のお店の認知度の<br class="sp">向上サービス改善を目指します
 				</p>
@@ -300,7 +185,7 @@
 				</h2>
 				<ul class="co3_list1">
 					<li>
-						<div class="img"><img src="./img/top/co31_1.png" alt=""></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co31_1.png" alt=""></div>
 						<h3 class="title1 green">
 							回答率の高い選択式で<br>
 							口コミを生成
@@ -311,7 +196,7 @@
 						</p>
 					</li>
 					<li>
-						<div class="img"><img src="./img/top/co31_2.png" alt=""></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co31_2.png" alt=""></div>
 						<h3 class="title1 green">
 							さまざまな業種に合わせやすい<br>
 							柔軟な設計
@@ -322,7 +207,7 @@
 						</p>
 					</li>
 					<li>
-						<div class="img"><img src="./img/top/co31_3.png" alt=""></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co31_3.png" alt=""></div>
 						<h3 class="title1 green">
 							QRでかんたん！<br>
 							導入時に店内のQRポップを<br class="sp2">プレゼント
@@ -333,10 +218,10 @@
 						</p>
 					</li>
 				</ul>
-				<a href="./contact.html" class="btn1">
+				<a href="{{ url('/register') }}" class="btn1">
 					<p class="btn1_text1 white">
 						<span class="yellow">まずは無料でお試し！</span>
-						ご利用申請はこちら
+						新規登録はこちら
 					</p>
 					<p class="btn1_text2 bgwh blue">無料</p>
 				</a>
@@ -350,7 +235,7 @@
 				</h2>
 				<ul class="co3_list2">
 					<li>
-						<div class="img"><img src="./img/top/co32_1.svg" alt="icon"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co32_1.svg" alt="icon"></div>
 						<div class="text_area">
 							<p class="title1">管理画面での一括管理</p>
 							<p class="text1">
@@ -359,7 +244,7 @@
 						</div>
 					</li>
 					<li>
-						<div class="img"><img src="./img/top/co32_2.svg" alt="icon"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co32_2.svg" alt="icon"></div>
 						<div class="text_area">
 							<p class="title1">口コミ一覧</p>
 							<p class="text1">
@@ -368,7 +253,7 @@
 						</div>
 					</li>
 					<li>
-						<div class="img"><img src="./img/top/co32_3.svg" alt="icon"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co32_3.svg" alt="icon"></div>
 						<div class="text_area">
 							<p class="title1">アンケート作成</p>
 							<p class="text1">
@@ -377,7 +262,7 @@
 						</div>
 					</li>
 					<li>
-						<div class="img"><img src="./img/top/co32_4.svg" alt="icon"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co32_4.svg" alt="icon"></div>
 						<div class="text_area">
 							<p class="title1">AIによる文章生成</p>
 							<p class="text1">
@@ -386,7 +271,7 @@
 						</div>
 					</li>
 					<li>
-						<div class="img"><img src="./img/top/co32_5.svg" alt="icon"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co32_5.svg" alt="icon"></div>
 						<div class="text_area">
 							<p class="title1">投稿画面への誘導</p>
 							<p class="text1">
@@ -395,7 +280,7 @@
 						</div>
 					</li>
 					<li>
-						<div class="img"><img src="./img/top/co32_6.svg" alt="icon"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co32_6.svg" alt="icon"></div>
 						<div class="text_area">
 							<p class="title1">QR発行機能</p>
 							<p class="text1">
@@ -419,7 +304,7 @@
 						<div class="co4_sld_cont">
 							<div class="co4_sld">
 								<a href="./works_detail" class="lista"></a>
-								<div class="img"><img src="./img/top/co41_1.jpg" alt="slider"></div>
+								<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co41_1.jpg" alt="slider"></div>
 								<ul class="cate_list1">
 									<li>飲食店</li>
 								</ul>
@@ -432,7 +317,7 @@
 						<div class="co4_sld_cont">
 							<div class="co4_sld">
 								<a href="./works_detail" class="lista"></a>
-								<div class="img"><img src="./img/top/co41_2.jpg" alt="slider"></div>
+								<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co41_2.jpg" alt="slider"></div>
 								<ul class="cate_list1">
 									<li>美容室</li>
 								</ul>
@@ -445,7 +330,7 @@
 						<div class="co4_sld_cont">
 							<div class="co4_sld">
 								<a href="./works_detail" class="lista"></a>
-								<div class="img"><img src="./img/top/co41_3.jpg" alt="slider"></div>
+								<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co41_3.jpg" alt="slider"></div>
 								<ul class="cate_list1">
 									<li>ネイルサロン</li>
 								</ul>
@@ -458,7 +343,7 @@
 						<div class="co4_sld_cont">
 							<div class="co4_sld">
 								<a href="./works_detail" class="lista"></a>
-								<div class="img"><img src="./img/top/co41_1.jpg" alt="slider"></div>
+								<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co41_1.jpg" alt="slider"></div>
 								<ul class="cate_list1">
 									<li>飲食店</li>
 								</ul>
@@ -471,7 +356,7 @@
 						<div class="co4_sld_cont">
 							<div class="co4_sld">
 								<a href="./works_detail" class="lista"></a>
-								<div class="img"><img src="./img/top/co41_2.jpg" alt="slider"></div>
+								<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co41_2.jpg" alt="slider"></div>
 								<ul class="cate_list1">
 									<li>美容室</li>
 								</ul>
@@ -484,7 +369,7 @@
 						<div class="co4_sld_cont">
 							<div class="co4_sld">
 								<a href="./works_detail" class="lista"></a>
-								<div class="img"><img src="./img/top/co41_3.jpg" alt="slider"></div>
+								<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co41_3.jpg" alt="slider"></div>
 								<ul class="cate_list1">
 									<li>ネイルサロン</li>
 								</ul>
@@ -506,31 +391,31 @@
 					</h2>
 					<ul class="co4_list2">
 						<li>
-							<div class="img"><img src="./img/top/co42_1.png" alt="業種"></div>
+							<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co42_1.png" alt="業種"></div>
 							<p class="text1">レストラン</p>
 						</li>
 						<li>
-							<div class="img"><img src="./img/top/co42_2.png" alt="業種"></div>
+							<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co42_2.png" alt="業種"></div>
 							<p class="text1">美容院</p>
 						</li>
 						<li>
-							<div class="img"><img src="./img/top/co42_3.png" alt="業種"></div>
+							<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co42_3.png" alt="業種"></div>
 							<p class="text1">ネイルサロン</p>
 						</li>
 						<li>
-							<div class="img"><img src="./img/top/co42_4.png" alt="業種"></div>
+							<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co42_4.png" alt="業種"></div>
 							<p class="text1">小売店</p>
 						</li>
 						<li>
-							<div class="img"><img src="./img/top/co42_5.png" alt="業種"></div>
+							<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co42_5.png" alt="業種"></div>
 							<p class="text1">ライブハウス</p>
 						</li>
 						<li>
-							<div class="img"><img src="./img/top/co42_6.png" alt="業種"></div>
+							<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co42_6.png" alt="業種"></div>
 							<p class="text1">カフェ</p>
 						</li>
 						<li>
-							<div class="img"><img src="./img/top/co42_7.png" alt="業種"></div>
+							<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co42_7.png" alt="業種"></div>
 							<p class="text1">観光</p>
 						</li>
 					</ul>
@@ -587,10 +472,10 @@
 				</li>
 			</ul>
 			<p class="text">※金額は税抜き表記です</p>
-			<a href="./contact.html" class="btn1">
+			<a href="{{ url('/register') }}" class="btn1">
 				<p class="btn1_text1 white">
 					<span class="yellow">まずは無料でお試し！</span>
-					ご利用申請はこちら
+					新規登録はこちら
 				</p>
 				<p class="btn1_text2 bgwh blue">無料</p>
 			</a>
@@ -599,7 +484,7 @@
 
 	<section class="content06">
 		<div class="ma1920">
-			<div class="sou1"><img src="./img/top/co6_sou1.svg" alt=""></div>
+			<div class="sou1"><img src="{{ asset('lp/img/' ) }}/top/co6_sou1.svg" alt=""></div>
 			<div class="co6_div">
 				<div class="inner">
 					<h2 class="mainTit">
@@ -608,7 +493,7 @@
 					<ul class="co6_list1">
 						<li class="cont">
 							<p class="step en green">STEP 01</p>
-							<div class="img"><img src="./img/top/co61_1.png" alt="icon"></div>
+							<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co61_1.png" alt="icon"></div>
 							<p class="title1 green">ご利用申請</p>
 							<p class="text1">
 								当サイトのご利用申請よりご連絡ください。
@@ -617,7 +502,7 @@
 						<li class="arrow"></li>
 						<li class="cont">
 							<p class="step en green">STEP 02</p>
-							<div class="img"><img src="./img/top/co61_2.png" alt="icon"></div>
+							<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co61_2.png" alt="icon"></div>
 							<p class="title1 green">ご契約</p>
 							<p class="text1">
 								ご契約に必要な情報をご連絡いただきます。
@@ -626,7 +511,7 @@
 						<li class="arrow"></li>
 						<li class="cont">
 							<p class="step en green">STEP 03</p>
-							<div class="img"><img src="./img/top/co61_3.png" alt="icon"></div>
+							<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co61_3.png" alt="icon"></div>
 							<p class="title1 green">アカウント・初期設定</p>
 							<p class="text1">
 								アカウント・初期設定を行っていただきます。
@@ -635,7 +520,7 @@
 						<li class="arrow"></li>
 						<li class="cont">
 							<p class="step en green">STEP 04</p>
-							<div class="img"><img src="./img/top/co61_4.png" alt="icon"></div>
+							<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co61_4.png" alt="icon"></div>
 							<p class="title1 green">ご利用開始</p>
 							<p class="text1">
 								たくさん口コミを集めましょう！
@@ -659,7 +544,7 @@
 
 	<section class="content07">
 		<div class="ma1920">
-			<div class="sou1"><img src="./img/top/co7_sou1.svg" alt=""></div>
+			<div class="sou1"><img src="{{ asset('lp/img/' ) }}/top/co7_sou1.svg" alt=""></div>
 			<div class="inner">
 				<h2 class="mainTit">
 					よくある質問
@@ -760,9 +645,9 @@
 		</div>
 	</section>
 
-	<section class="content08">
+	<!-- <section class="content08">
 		<div class="ma1920">
-			<div class="sou1"><img src="./img/top/co8_sou1.svg" alt=""></div>
+			<div class="sou1"><img src="{{ asset('lp/img/' ) }}/top/co8_sou1.svg" alt=""></div>
 			<div class="inner">
 				<h2 class="mainTit">
 					コラム
@@ -770,7 +655,7 @@
 				<ul class="co8_list1">
 					<li>
 						<a href="./column_detail" class="lista"></a>
-						<div class="img"><img src="./img/top/co81_1.jpg" alt="コラム"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co81_1.jpg" alt="コラム"></div>
 						<div class="dacate">
 							<p class="date">2026.00.00</p>
 							<p class="cate">カテゴリ</p>
@@ -781,7 +666,7 @@
 					</li>
 					<li>
 						<a href="./column_detail" class="lista"></a>
-						<div class="img"><img src="./img/top/co81_2.jpg" alt="コラム"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co81_2.jpg" alt="コラム"></div>
 						<div class="dacate">
 							<p class="date">2026.00.00</p>
 							<p class="cate">カテゴリ</p>
@@ -792,7 +677,7 @@
 					</li>
 					<li>
 						<a href="./column_detail" class="lista"></a>
-						<div class="img"><img src="./img/top/co81_3.jpg" alt="コラム"></div>
+						<div class="img"><img src="{{ asset('lp/img/' ) }}/top/co81_3.jpg" alt="コラム"></div>
 						<div class="dacate">
 							<p class="date">2026.00.00</p>
 							<p class="cate">カテゴリ</p>
@@ -804,7 +689,15 @@
 				</ul>
 			</div>
 		</div>
-	</section>
+	</section> -->
+
+	<div class="content08">
+		<div class="ma1920">
+			<div class="inner">
+				@include('lp.components.notices')
+			</div>
+		</div>
+	</div>
 
 
 	<section class="content09">
@@ -814,14 +707,14 @@
 				Coelで今すぐ口コミを獲得！
 			</h2>
 			<div class="btn_flex1">
-				<a href="./contact.html" class="btn1">
+				<a href="{{ url('/register') }}" class="btn1">
 					<p class="btn1_text1 white">
 						<span class="yellow">まずは無料でお試し！</span>
-						ご利用申請はこちら
+						新規登録はこちら
 					</p>
 					<p class="btn1_text2 bgwh blue">無料</p>
 				</a>
-				<a href="./contact.html" class="btn2 green bgwh">その他お問い合わせ</a>
+				<a href="{{ url('/contact') }}" class="btn2 green bgwh">その他お問い合わせ</a>
 			</div>
 		</div>
 	</section>
@@ -831,108 +724,9 @@
 
 
 <div class="side_bnr_area">
-	<div class="side_close_btn"><img src="./img/common/side_close.svg" alt="close"></div>
-	<a href="./contact.html" class="side_bnr"><img src="./img/common/side_bnr.png" alt="ご協力いただいたご契約者様限定 利用料３ヶ月無料キャンペーン"></a>
+	<div class="side_close_btn"><img src="{{ asset('lp/img/' ) }}/common/side_close.svg" alt="close"></div>
+	<a href="{{ url('/register') }}" class="side_bnr"><img src="{{ asset('lp/img/' ) }}/common/side_bnr.png" alt="ご協力いただいたご契約者様限定 利用料３ヶ月無料キャンペーン"></a>
 	<p class="text1">※定員に達し次第キャンペーン終了となります</p>
 </div>
 
-
-<!-- footer -->
-<footer>
-	<div class="inner">
-		<div class="flex">
-			<div class="left">
-				<p class="logo"><a href="./"><img src="./img/common/logo.svg" alt="Coel"></a></p>
-			</div>
-			<div class="right">
-				<ul class="ft_list1">
-					<li><a href="./about.html">Coel (コエル)について</a></li>
-					<li><a href="./plan.html">料金プラン</a></li>
-					<li><a href="./column.html">コラム</a></li>
-					<li><a href="./agents.html">代理店募集</a></li>
-				</ul>
-				<ul class="btn_list1">
-					<li><a href="./login.html" class="bgwh">ログイン</a></li>
-					<li><a href="./contact.html" class="bgblu white">ご利用申請</a></li>
-				</ul>
-			</div>
-		</div>
-		<p class="copyright">©︎ Payn, inc.</p>
-	</div>
-</footer>
-<!-- /footer -->
-
-
-<script src="./js/script.js"></script>
-<!-- MV画像動き -->
-<script>
-const path = document.getElementById("blobPath");
-const blob = document.querySelector(".blob_wrap");
-
-const pointCount = 18;
-
-const base = [];
-
-for(let i=0;i<pointCount;i++){
-    base.push(Math.PI*2/pointCount*i);
-}
-
-function draw(time){
-
-    const rect = blob.getBoundingClientRect();
-
-    const size = Math.min(rect.width, rect.height);
-
-    const cx = size/2;
-    const cy = size/2;
-
-    const radius = size*0.46;
-
-    let d="";
-    const pts=[];
-
-    base.forEach((angle,index)=>{
-
-        const r =
-            radius
-            + Math.sin(time*0.0015+index*0.9)*12
-            + Math.cos(time*0.0012+index*1.7)*8
-            + Math.sin(time*0.0019+index*2.4)*5;
-
-        pts.push({
-
-            x:cx+Math.cos(angle)*r,
-            y:cy+Math.sin(angle)*r
-
-        });
-
-    });
-
-    for(let i=0;i<pts.length;i++){
-
-        const p1=pts[i];
-        const p2=pts[(i+1)%pts.length];
-
-        const mx=(p1.x+p2.x)/2;
-        const my=(p1.y+p2.y)/2;
-
-        if(i===0){
-            d=`M ${mx} ${my}`;
-        }
-
-        d+=` Q ${p2.x} ${p2.y} ${(p2.x+pts[(i+2)%pts.length].x)/2} ${(p2.y+pts[(i+2)%pts.length].y)/2}`;
-
-    }
-
-    d+=" Z";
-
-    path.setAttribute("d",d);
-
-    requestAnimationFrame(draw);
-
-}
-
-requestAnimationFrame(draw);
-</script>
-</body>
-</html>
+@endsection

@@ -55,6 +55,6 @@ class PublicNoticeController extends Controller
                     ->paginate($perPage)
                     ->withQueryString();
 
-        return view('welcome', compact('notices', 'perPage'));
+        return view('lp.index', compact('notices', 'perPage'));
     }
 }
