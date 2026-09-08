@@ -541,6 +541,142 @@ public function dashboard(Request $request)
         return response()->json(['status' => 'success']);
     }
 
+
+    public function exportDashboardCsv(Request $request)
+{
+    $user = auth()->user();
+
+    $company = Company::where('user_id', $user->id)->firstOrFail();
+
+    // プレミアムプラン限定
+    abort_unless(
+        $company->effectivePlanCode() === 'premium',
+        403
+    );
+
+    $filter = $request->input('filter', 'this_month');
+
+    if ($filter === 'last_month') {
+        $startDate = now()->subMonthNoOverflow()->startOfMonth();
+        $endDate = now()->subMonthNoOverflow()->endOfMonth();
+    } elseif ($filter === 'last_3_months') {
+        $startDate = now()->subMonths(3)->startOfDay();
+        $endDate = now()->endOfDay();
+    } elseif (
+        $filter === 'custom'
+        && $request->filled('start_date')
+        && $request->filled('end_date')
+    ) {
+        $request->validate([
+            'start_date' => ['required', 'date'],
+            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
+        ]);
+
+        $startDate = \Carbon\Carbon::parse($request->start_date)->startOfDay();
+        $endDate = \Carbon\Carbon::parse($request->end_date)->endOfDay();
+    } else {
+        $startDate = now()->startOfMonth();
+        $endDate = now()->endOfMonth();
+    }
+
+    $reviews = Review::where('company_id', $company->id)
+        ->whereBetween('created_at', [$startDate, $endDate])
+        ->get();
+
+    $filename = 'dashboard_' .
+        $startDate->format('Ymd') .
+        '_' .
+        $endDate->format('Ymd') .
+        '.csv';
+
+    return response()->streamDownload(function () use (
+        $reviews,
+        $startDate,
+        $endDate
+    ) {
+        $handle = fopen('php://output', 'w');
+
+        // Excelでの文字化け防止
+        fwrite($handle, "\xEF\xBB\xBF");
+
+        fputcsv($handle, [
+            '期間',
+            '回答数',
+            'コピー率',
+            'Google遷移率',
+            '平均所要時間',
+        ]);
+
+        $currentDate = $startDate->copy()->startOfDay();
+        $lastDate = $endDate->copy()->startOfDay();
+
+        while ($currentDate->lte($lastDate)) {
+            $date = $currentDate->format('Y-m-d');
+
+            $dailyReviews = $reviews->filter(function ($review) use ($date) {
+                return $review->created_at->format('Y-m-d') === $date;
+            });
+
+            $totalCount = $dailyReviews->count();
+            $copyCount = $dailyReviews->where('is_copied', true)->count();
+            $redirectCount = $dailyReviews->where('is_redirected', true)->count();
+            $avgDuration = $dailyReviews->avg('duration_seconds');
+
+            $copyRate = $totalCount > 0
+                ? round(($copyCount / $totalCount) * 100, 1)
+                : 0;
+
+            $redirectRate = $totalCount > 0
+                ? round(($redirectCount / $totalCount) * 100, 1)
+                : 0;
+
+            $avgDurationMinutes = $avgDuration
+                ? round($avgDuration / 60, 1)
+                : 0;
+
+            fputcsv($handle, [
+                $currentDate->format('Y/m/d'),
+                $totalCount,
+                $copyRate . '%',
+                $redirectRate . '%',
+                $avgDurationMinutes . '分',
+            ]);
+
+            $currentDate->addDay();
+        }
+
+        // 最終行：ダッシュボードと同じ期間全体の集計
+        $totalCount = $reviews->count();
+        $copyCount = $reviews->where('is_copied', true)->count();
+        $redirectCount = $reviews->where('is_redirected', true)->count();
+        $avgDuration = $reviews->avg('duration_seconds');
+
+        $copyRate = $totalCount > 0
+            ? round(($copyCount / $totalCount) * 100, 1)
+            : 0;
+
+        $redirectRate = $totalCount > 0
+            ? round(($redirectCount / $totalCount) * 100, 1)
+            : 0;
+
+        $avgDurationMinutes = $avgDuration
+            ? round($avgDuration / 60, 1)
+            : 0;
+
+        fputcsv($handle, [
+            $startDate->format('Y/m/d') . '～' . $endDate->format('Y/m/d'),
+            $totalCount,
+            $copyRate . '%',
+            $redirectRate . '%',
+            $avgDurationMinutes . '分',
+        ]);
+
+        fclose($handle);
+    }, $filename, [
+        'Content-Type' => 'text/csv; charset=UTF-8',
+    ]);
+}
+
     // QRダウンロード
     public function downloadQr()
     {

@@ -29,20 +29,42 @@
             </div>
         @endif
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-            <h1 class="text-xl font-bold text-gray-800 flex items-center"><span class="mr-2"><img src="/img/top_aicon01.svg" alt="" class="h-10"></span>分析ダッシュボード</h1>
-            <form action="{{ route('dashboard') }}" method="GET" class="flex flex-wrap items-center gap-3">
-                <select name="filter" onchange="this.form.submit()" class="bg-gray-50 border border-gray-200 text-sm rounded-xl focus:ring-green-500 block p-2.5">
-                    <option value="this_month" {{ $filter == 'this_month' ? 'selected' : '' }}>今月</option>
-                    <option value="last_month" {{ $filter == 'last_month' ? 'selected' : '' }}>先月</option>
-                    <option value="last_3_months" {{ $filter == 'last_3_months' ? 'selected' : '' }}>直近3ヶ月</option>
-                    <option value="custom" {{ $filter == 'custom' ? 'selected' : '' }}>期間指定</option>
-                </select>
-                @if($filter == 'custom')
-                    <input type="date" name="start_date" class="text-sm rounded-xl border-gray-200" value="{{ request('start_date') }}">
-                    <input type="date" name="end_date" class="text-sm rounded-xl border-gray-200" value="{{ request('end_date') }}">
-                    <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded-xl text-sm">適用</button>
+            <h1 class="text-xl font-bold text-gray-800 flex items-center">
+                <span class="mr-2">
+                    <img src="/img/top_aicon01.svg" alt="" class="h-10">
+                </span>
+                分析ダッシュボード
+            </h1>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <form action="{{ route('dashboard') }}" method="GET" class="flex flex-wrap items-center gap-3">
+                    <select name="filter" onchange="this.form.submit()" class="bg-gray-50 border border-gray-200 text-sm rounded-xl focus:ring-green-500 block p-2.5">
+                        <option value="this_month" {{ $filter == 'this_month' ? 'selected' : '' }}>今月</option>
+                        <option value="last_month" {{ $filter == 'last_month' ? 'selected' : '' }}>先月</option>
+                        <option value="last_3_months" {{ $filter == 'last_3_months' ? 'selected' : '' }}>直近3ヶ月</option>
+                        <option value="custom" {{ $filter == 'custom' ? 'selected' : '' }}>期間指定</option>
+                    </select>
+
+                    @if($filter == 'custom')
+                        <input type="date" name="start_date" class="text-sm rounded-xl border-gray-200" value="{{ request('start_date') }}">
+                        <input type="date" name="end_date" class="text-sm rounded-xl border-gray-200" value="{{ request('end_date') }}">
+                        <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded-xl text-sm">適用</button>
+                    @endif
+                </form>
+
+                @if($myCompany && $myCompany->effectivePlanCode() === 'premium')
+                    <a
+                        href="{{ route('dashboard.export-csv', [
+                            'filter' => $filter,
+                            'start_date' => request('start_date'),
+                            'end_date' => request('end_date'),
+                        ]) }}"
+                        class="inline-flex items-center justify-center bg-green-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-green-700 transition"
+                    >
+                        CSVダウンロード
+                    </a>
                 @endif
-            </form>
+            </div>
         </div>
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -119,7 +141,7 @@
                             @foreach($surveyStats as $questionText => $counts)
                             <div>
                                 <div class="text-sm font-bold text-gray-600 mb-3 pl-2 flex items-center">
-                                <span class="mr-2"><img src="/img/fuki_aicon.svg" alt="" class="h-10" style="width: 25px;"></span> 
+                                <span class="mr-2"><img src="/img/fuki_aicon.svg" alt="" class="h-10" style="width: 25px;"></span>
                                     <p>{{ $questionText }}</p>
                                 </div>
                                 <div class="space-y-2">

@@ -78,6 +78,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [ReviewController::class, 'dashboard'])
         ->name('dashboard');
 
+    Route::get('/dashboard/export-csv', [ReviewController::class, 'exportDashboardCsv'])
+        ->name('dashboard.export-csv');
 
     /*
     |--------------------------------------------------------------------------
