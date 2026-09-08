@@ -65,7 +65,7 @@ $today = date('Y/m/d H:i:s');
 $mail_title = 'Coel';
 
 // 最終的な送信先は後で設定
-$mailto = 'info@coel.jp';
+$mailto = 'support@at-gungun.co.jp';
 
 $subject = "{$mail_title} お問い合わせフォームより送信";
 
@@ -91,10 +91,10 @@ maildata;
 
 $fromName = mb_encode_mimeheader($mail_title);
 
-$header = "From: {$fromName} <info@coel.jp>\r\n";
+$header = "From: {$fromName} <support@at-gungun.co.jp>\r\n";
 $header .= "Reply-To: {$mail}";
 
-$efrom = '-finfo@coel.jp';
+$efrom = '-fsupport@at-gungun.co.jp';
 
 $adminSent = mb_send_mail(
     $mailto,
@@ -147,7 +147,7 @@ $message_guest = <<<maildata
 
 maildata;
 
-$header_guest = "From: {$fromName} <info@coel.jp>";
+$header_guest = "From: {$fromName} <support@at-gungun.co.jp>";
 
 mb_send_mail(
     $mail,
