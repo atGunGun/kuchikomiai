@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Coel</title>
-
+@yield('head')
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
@@ -19,6 +19,8 @@
 <link rel="stylesheet" href="{{ asset('lp/css/style.css') }}">
 <link rel="stylesheet" href="{{ asset('lp/css/slick-theme.css') }}">
 <link rel="stylesheet" href="{{ asset('lp/css/slick.css') }}">
+<link rel="stylesheet" href="{{ asset('lp/css/validationEngine.jquery.css') }}">
+<link rel="stylesheet" href="{{ asset('lp/css/jquery-ui.min.css') }}">
 
 <link rel="shortcut icon" href="{{ asset('lp/img/common/favicon.png') }}">
 
@@ -26,7 +28,7 @@
 <script src="{{ asset('lp/js/slick.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.6/ScrollMagic.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
-
+<script src="{{ asset('lp/js/jquery-ui.min.js') }}"></script>
 </head>
 
 <body id="pTop" class="website">
@@ -37,6 +39,9 @@
 
 @include('lp.components.footer')
 <script src="{{ asset('lp/js/script.js') }}"></script>
+<script src="{{ asset('lp/js/jquery.validationEngine.js') }}"></script>
+<script src="{{ asset('lp/js/jquery.validationEngine-ja.js') }}"></script>
+<script src="{{ asset('lp/js/mail_send.js') }}"></script>
 <!-- MV画像動き -->
 <script>
 const path = document.getElementById("blobPath");
@@ -105,7 +110,9 @@ function draw(time){
 
 }
 
-requestAnimationFrame(draw);
+if (path && blob) {
+    requestAnimationFrame(draw);
+}
 </script>
 </body>
 </html>

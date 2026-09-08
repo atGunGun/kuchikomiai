@@ -11,6 +11,7 @@ use App\Http\Controllers\PublicNoticeController;
 use App\Http\Controllers\CompanySurveyController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\AdminSurveyTemplateController;
+use App\Http\Controllers\ContactController;
 
 
 /*
@@ -22,6 +23,16 @@ use App\Http\Controllers\AdminSurveyTemplateController;
 // トップページ
 Route::get('/', [PublicNoticeController::class, 'top'])
     ->name('top');
+
+/*
+|--------------------------------------------------------------------------
+| お問い合わせ
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/contact', [ContactController::class, 'index'])
+    ->name('contact.index');
+
 
 // Stripe Webhook
 Route::post('/stripe/webhook', [StripeController::class, 'webhook'])

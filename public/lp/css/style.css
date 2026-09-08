@@ -1987,13 +1987,11 @@ button {
 }
 
 em{
-	background: #E0090A;
-	border-radius:2px;
-	color:#fff;
-	padding: 0px 8px;
+	color: #48AF72;
+	white-space: nowrap;
+	font-weight: 500;
 	white-space: nowrap;
 	font-size: clamp(1.2rem, 1.6vw, 2rem);
-	margin-left:28px;
 }
 
 em.nini{
@@ -2009,7 +2007,7 @@ em.nini{
 	padding: 20px 1.622%;
 	height: 180px;
 	overflow-y:scroll;
-	margin: 56px auto 48px;
+	margin: 20px auto 48px;
 	background: #fff;
 	-ms-overflow-style: none;
 	scrollbar-width: none;
@@ -2093,7 +2091,11 @@ em.nini{
 }
 
 .contact01{
-	padding:8.334% 0;
+	padding: 240px 0 120px;
+}
+
+.contact01 .mainTit{
+	margin-bottom:40px;
 }
 
 .contact01_div1{
@@ -2363,6 +2365,47 @@ input.clearForm2 {
     padding:  3rem 10px;
     border-radius: 20px;
 }
+
+
+.btn3{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	margin:40px auto 0;
+	transition:.4s;
+	max-width:320px;
+	width:100%;
+}
+
+.btn3 button,
+.btn3 input{
+	color:#fff!important;
+	width:100%;
+	height:100%;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	cursor:pointer;
+	transition:.4s;
+	background:#48AF72;
+	border-radius:60px;
+	height:70px;
+	border:2px solid #48AF72;
+	font-size:1.8rem;
+	font-weight:500;
+}
+
+.btn3 button:hover,
+.btn3 input:hover{
+	color:#48AF72!important;
+	background:#fff;
+}
+
+.contact01 .text{
+	text-align:center;
+	line-height:1.8;
+}
+
 /*-- 固定ここまで --*/
 
 
@@ -3366,6 +3409,10 @@ height: 40%;
 
 .mv_btn_img{
 	left: 7%;
+}
+
+.privacy_area{
+	font-size:1.3rem;
 }
 	
 /* ☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆ */
