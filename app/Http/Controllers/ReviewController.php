@@ -35,7 +35,7 @@ class ReviewController extends Controller
     {
         // ★ findOrFail($id) から where('token', $token)->firstOrFail() に変更
         $company = Company::with('selectedSurvey.questions')->where('token', $token)->firstOrFail();
-        
+
         $reviews = collect();
         return view('form', compact('company', 'reviews'));
     }
@@ -47,7 +47,7 @@ class ReviewController extends Controller
         $companyId = $request->input('company_id');
         // ★ 設問情報も一緒に取得するように変更
         $company = \App\Models\Company::with('selectedSurvey.questions')->find($companyId);
-        
+
         if (!$company) {
             return back()->with('error', '店舗情報が見つかりません。');
         }
@@ -83,7 +83,7 @@ class ReviewController extends Controller
             foreach ($company->selectedSurvey->questions as $question) {
                 if ($question->is_required) {
                     $val = $answers[$question->id] ?? null;
-                    
+
                     // 値が無い、空文字、またはチェックボックスが1つも選ばれていない場合
                     if (is_null($val) || (is_string($val) && trim($val) === '') || (is_array($val) && count($val) === 0)) {
                         return back()->with('error', "「{$question->question_text}」は必須項目です。")->withInput();
@@ -115,12 +115,25 @@ class ReviewController extends Controller
             $promptDetails = "特になし";
         }
 
+        $reviewStyle = 'natural';
+
+        if ($company->effectivePlanCode() === 'premium') {
+            $reviewStyle = $company->review_style ?? 'natural';
+        }
+
+        $styleInstruction = match ($reviewStyle) {
+            'polite' => '丁寧で、きちんとした口調で書いてください。礼儀正しく自然な文章にしてください。',
+            'passionate' => '感動や満足感がしっかり伝わる、熱量の高い口調で書いてください。ただし大げさすぎたり、不自然な表現にならないようにしてください。',
+            default => '親しみやすく、堅すぎない自然体の口調で書いてください。',
+        };
+
         $prompt = "以下の情報を元に、Googleマップ用の素敵な口コミを200文字程度で作成してください。\n" .
-                "【重要ルール】\n" .
-                "・挨拶や「作成しました」などの前置き、後書きは一切書かないでください。\n" .
-                "・「口コミ本文」などの見出しも不要です。口コミの文章だけを出力してください。\n\n" .
-                "[店舗名]: {$company->name}\n" .
-                "[お客様の感想]:\n{$promptDetails}";
+        "【重要ルール】\n" .
+        "・挨拶や「作成しました」などの前置き、後書きは一切書かないでください。\n" .
+        "・「口コミ本文」などの見出しも不要です。口コミの文章だけを出力してください。\n" .
+        "・{$styleInstruction}\n\n" .
+        "[店舗名]: {$company->name}\n" .
+        "[お客様の感想]:\n{$promptDetails}";
 
         // 3. API通信
         $response = \Illuminate\Support\Facades\Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={$apiKey}", [
@@ -132,21 +145,21 @@ class ReviewController extends Controller
         // 4. エラーハンドリング
         if (isset($data['error'])) {
             $msg = $data['error']['message'] ?? '通信エラー';
-            
+
             if (str_contains(strtolower($msg), 'high demand') || str_contains(strtolower($msg), 'overloaded')) {
                 return back()->with('error', '現在、利用者が多く混み合っています。1〜2分待ってからもう一度お試しください。')->withInput();
             }
-            
+
             return back()->with('error', "Google APIエラー: {$msg}")->withInput();
         }
 
         $aiText = $data['candidates'][0]['content']['parts'][0]['text'] ?? '文章の生成に失敗しました。';
-        
+
         // 5. データベースに保存
         // ★修正：duration_seconds（所要時間）の保存処理を追加
         $review = \App\Models\Review::create([
             'company_id' => $company->id,
-            'prompt_details' => $promptDetails, 
+            'prompt_details' => $promptDetails,
             'generated_text' => $aiText,
             'duration_seconds' => $request->input('duration_seconds', 0) // ★ここを追加
         ]);
@@ -466,7 +479,25 @@ public function dashboard(Request $request)
         ]);
 
         // $data = $request->only(['name', 'address', 'google_map_url', 'welcome_message', 'completion_message']);
-        $data = $request->only(['name', 'address', 'google_map_url', 'welcome_message', 'completion_message', 'theme_color']); // theme_color を追加
+        $data = $request->only([
+            'name',
+            'address',
+            'google_map_url',
+            'welcome_message',
+            'completion_message',
+            'theme_color',
+        ]);
+
+        if ($company->effectivePlanCode() === 'premium') {
+            $request->validate([
+                'review_style' => 'required|in:natural,polite,passionate',
+            ]);
+
+            $data['review_style'] = $request->input('review_style');
+        } else {
+            // プレミアム以外では必ず自然体に戻す
+            $data['review_style'] = 'natural';
+        }
 
         if ($request->hasFile('logo')) {
             $path = $request->file('logo')->store('logos', 'public');
@@ -502,7 +533,7 @@ public function dashboard(Request $request)
             // 「そのまま投稿」の場合は、コピー済・遷移済・そのまま投稿済 の全てをtrueにする
             $review->is_copied = true;
             $review->is_redirected = true;
-            $review->is_direct_post = true; 
+            $review->is_direct_post = true;
         }
 
         $review->save();

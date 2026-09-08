@@ -2,7 +2,7 @@
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 
     <div class="max-w-5xl mx-auto space-y-6">
-        
+
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
@@ -15,20 +15,20 @@
 
         @if(session('success'))
             <div class="p-4 text-sm text-green-800 rounded-xl bg-green-50 border border-green-200 flex items-center gap-2 animate-fade-in" role="alert">
-                <span class="text-lg font-bold">✓</span> 
+                <span class="text-lg font-bold">✓</span>
                 <span class="font-medium">{{ session('success') }}</span>
             </div>
         @endif
 
         <form action="{{ url('/settings') }}" method="POST" enctype="multipart/form-data" id="settings-form">
             @csrf
-            
+
             <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 space-y-6">
                 <h2 class="text-lg font-bold text-gray-800 border-b pb-4">基本情報</h2>
-                
+
                 <div>
                     <label class="block mb-2 text-sm font-bold text-gray-700">店舗名 <span class="text-red-500">*</span></label>
-                    <input type="text" name="name" value="{{ $company->name }}" required 
+                    <input type="text" name="name" value="{{ $company->name }}" required
                            class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus-brand block w-full p-3 outline-none transition-all">
                 </div>
 
@@ -45,7 +45,7 @@
                 <div>
                     <label class="block mb-2 text-sm font-bold text-gray-700">テーマカラー</label>
                     <div class="flex items-center gap-4">
-                        <input type="color" name="theme_color" value="{{ $company->theme_color ?? '#16a34a' }}" 
+                        <input type="color" name="theme_color" value="{{ $company->theme_color ?? '#16a34a' }}"
                             class="h-12 w-20 cursor-pointer rounded-lg border border-gray-200">
                         <p class="text-xs text-gray-500 font-medium">※アンケート画面のボタンやチェックの色に反映されます。</p>
                     </div>
@@ -53,7 +53,7 @@
 
                 <div>
                     <label class="block mb-2 text-sm font-bold text-gray-700">住所</label>
-                    <input type="text" name="address" value="{{ $company->address ?? '' }}" 
+                    <input type="text" name="address" value="{{ $company->address ?? '' }}"
                            class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus-brand block w-full p-3 outline-none transition-all"
                            placeholder="例：東京都渋谷区〇〇 1-2-3">
                 </div>
@@ -127,12 +127,69 @@
                 </div>
             </div>
 
+            {{-- AI口コミスタイル設定 --}}
+            @if($company->effectivePlanCode() === 'premium')
+                <div class="pt-4">
+                    <label class="block mb-2 text-sm font-bold text-gray-700">
+                        AI口コミスタイル
+                    </label>
+
+                    <p class="text-xs text-gray-500 font-medium mb-4">
+                        AIが生成する口コミの文体を選択できます。
+                    </p>
+
+                    <div class="space-y-3">
+                        <label class="flex items-start gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
+                            <input
+                                type="radio"
+                                name="review_style"
+                                value="natural"
+                                class="mt-1"
+                                {{ ($company->review_style ?? 'natural') === 'natural' ? 'checked' : '' }}
+                            >
+                            <span>
+                                <span class="block font-bold text-gray-800">自然体</span>
+                                <span class="block text-sm text-gray-500 mt-1">親しみやすい口調</span>
+                            </span>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
+                            <input
+                                type="radio"
+                                name="review_style"
+                                value="polite"
+                                class="mt-1"
+                                {{ ($company->review_style ?? 'natural') === 'polite' ? 'checked' : '' }}
+                            >
+                            <span>
+                                <span class="block font-bold text-gray-800">丁寧</span>
+                                <span class="block text-sm text-gray-500 mt-1">きちんとした口調</span>
+                            </span>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50">
+                            <input
+                                type="radio"
+                                name="review_style"
+                                value="passionate"
+                                class="mt-1"
+                                {{ ($company->review_style ?? 'natural') === 'passionate' ? 'checked' : '' }}
+                            >
+                            <span>
+                                <span class="block font-bold text-gray-800">熱量高め</span>
+                                <span class="block text-sm text-gray-500 mt-1">感動が伝わる口調</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            @endif
+
             <div class="mt-8 flex justify-end">
                 <button type="submit" class="text-white bg-[#0566F4] hover:bg-green-700 font-extrabold rounded-2xl text-base px-10 py-3 shadow-md  transition-all transform hover:-translate-y-0.5">
                     設定を保存する
                 </button>
             </div>
-        
+
         </form>
 
             {{-- プラン設定 --}}

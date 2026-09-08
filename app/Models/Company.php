@@ -19,6 +19,7 @@ class Company extends Model
         'welcome_message',
         'theme_color',
         'completion_message',
+        'review_style',
         'plan_id',
         'demo_plan_id',
         'demo_expires_at',
@@ -78,13 +79,37 @@ class Company extends Model
         return $this->belongsTo(Survey::class, 'selected_survey_id');
     }
     protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($company) {
-            if (empty($company->token)) {
-                $company->token = Str::random(12);
-            }
-        });
-    }
+{
+    parent::boot();
+
+    static::creating(function ($company) {
+        if (empty($company->token)) {
+            $company->token = Str::random(12);
+        }
+    });
+
+    static::saving(function ($company) {
+        $isPremium = false;
+
+        // 有効なデモプランがある場合はデモプランを優先
+        if (
+            $company->demo_plan_id &&
+            (is_null($company->demo_expires_at) || $company->demo_expires_at->isFuture())
+        ) {
+            $isPremium = Plan::whereKey($company->demo_plan_id)
+                ->where('code', 'premium')
+                ->exists();
+        } elseif ($company->plan_id) {
+            $isPremium = Plan::whereKey($company->plan_id)
+                ->where('code', 'premium')
+                ->exists();
+        }
+
+        // プレミアム以外になったら必ず自然体へ戻す
+        if (!$isPremium) {
+            $company->review_style = 'natural';
+        }
+    });
+}
 
 }
