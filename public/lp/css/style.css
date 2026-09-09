@@ -145,20 +145,28 @@ header {
 	right: 0;
 	z-index: 9999;
 	transition: .4s;
-	padding: 34px 1.719% 37px 3.282%;
+	padding: 13px 1.719% 14px 3.282%;
 	top: 0;
 	border-bottom: 1px solid #BCBCBC;
 	background: #fff;
 }
 
 header.headerScroll{
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding-top: 13px;
+	padding-bottom: 14px;
+}
+
+header.headerScroll .hLogo{
+	max-width: 80px;
+}
+
+header.headerScroll .hd_link a{
+	height: 39px;
 }
 
 .hLogo{
 	width: 23%;
-	max-width: 146px;
+	max-width: 100px;
 }
 
 
@@ -1158,7 +1166,7 @@ aspect-ratio: 669 / 644;
 .content05{
 	width:100%;
 	position:relative;
-	padding:240px 0 120px;
+	padding: 165px 0 120px;
 }
 
 .content05:before{
@@ -1210,7 +1218,7 @@ aspect-ratio: 669 / 644;
 }
 
 .co05_list1 > li .title1{
-	font-size: clamp(2rem,2.6vw,2.6rem);
+	font-size: clamp(1.8rem,2vw,2rem);
 	font-weight:900;
 	line-height:1.423;
 	margin-bottom:15px;

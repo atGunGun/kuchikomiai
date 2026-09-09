@@ -440,8 +440,11 @@
 						<span class="mid">¥</span>0<span class="small">/ 月</span>
 					</p>
 					<ul class="co05_list2">
-						<li>口コミ5件までのお試しプラン</li>
-						<li>その他機能はスタンダードプランと同じ</li>
+						<li>口コミ 5件/月</li>
+						<li>設問は1件まで登録可能</li>
+						<li>QRコード生成</li>
+						<li>業種別デフォルト質問</li>
+						<li>基本分析ダッシュボード</li>
 					</ul>
 					<div class="co5_div1">
 						<p class="text1">※QRポッププレゼント対象外となります</p>
@@ -452,23 +455,28 @@
 						スタンダードプラン
 					</h3>
 					<p class="price">
-						<span class="mid">¥</span>3<span class="small2">,</span>000<span class="small">/ 月</span>
+						<span class="mid">¥</span>4<span class="small2">,</span>980<span class="small">/ 月</span>
 					</p>
 					<ul class="co05_list2">
-						<li>初期費用・追加費用なし</li>
-						<li>口コミ件数制限なし</li>
+						<li>0円の全機能</li>
 						<li>設問は50件まで登録可能</li>
-						<li>導入時のQRポップをプレゼント</li>
+						<li>口コミ 150件/月</li>
+						<li>導入時のQRポップを導入時のQRポップをプレゼント(5枚)</li>
 					</ul>
 				</li>
 				<li>
 					<h3 class="title1">
 						プレミアムプラン
 					</h3>
-					<p class="price2">
-						Comingsoon
+					<p class="price">
+						<span class="mid">¥</span>9<span class="small2">,</span>800<span class="small">/ 月</span>
 					</p>
-					<p class="text2">より便利な機能を開発中！</p>
+					<ul class="co05_list2">
+						<li>スタンダードプランの全機能</li>
+						<li>AI 口コミ回答機能</li>
+						<li>口コミトーン 3種</li>
+						<li>CSVエクスポート・月次レポート</li>
+					</ul>
 				</li>
 			</ul>
 			<p class="text">※金額は税抜き表記です</p>
@@ -563,7 +571,8 @@
 							<dd>
 								<span class="ans en">A.</span>
 								<p class="text1">
-									テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+								アンケートの回答内容をもとにAIが口コミ文章を生成するため、お客様ごとに回答内容を反映した文章が作成されます。<br>
+								また、生成された文章はお客様自身で自由に編集してから投稿することも可能です。
 								</p>
 							</dd>
 						</dl>
@@ -581,7 +590,83 @@
 							<dd>
 								<span class="ans en">A.</span>
 								<p class="text1">
-									テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+									はい。お客様はQRコードを読み込み、簡単なアンケートに回答するだけで口コミ文章を作成できます。<br>
+									生成された文章は簡単にコピーでき、そのまま口コミ投稿画面へ進むことができます。
+								</p>
+							</dd>
+						</dl>
+					</li>
+					<li>
+						<dl>
+							<dt>
+								<span class="que en">Q.</span>
+								<p class="title1">お客様側で会員登録やアプリのインストールは必要ですか？</p>
+								<div class="pulu">
+									<span></span>
+									<span></span>
+								</div>
+							</dt>
+							<dd>
+								<span class="ans en">A.</span>
+								<p class="text1">
+									いいえ。専用アプリのインストールやCoelへの会員登録は必要ありません。QRコードをスマートフォンで読み取るだけで、すぐにご利用いただけます。<br>
+								</p>
+							</dd>
+						</dl>
+					</li>
+					<li>
+						<dl>
+							<dt>
+								<span class="que en">Q.</span>
+								<p class="title1">アンケートの内容は自由に設定できますか？</p>
+								<div class="pulu">
+									<span></span>
+									<span></span>
+								</div>
+							</dt>
+							<dd>
+								<span class="ans en">A.</span>
+								<p class="text1">
+									ごはい。店舗やサービスに合わせてアンケート内容を設定できます。<br>
+									お客様が答えやすい質問を用意することで、実際の体験や感想を反映した口コミ文章の作成につなげられます。
+								</p>
+							</dd>
+						</dl>
+					</li>
+					<li>
+						<dl>
+							<dt>
+								<span class="que en">Q.</span>
+								<p class="title1">どのような業種で利用できますか？</p>
+								<div class="pulu">
+									<span></span>
+									<span></span>
+								</div>
+							</dt>
+							<dd>
+								<span class="ans en">A.</span>
+								<p class="text1">
+									飲食店、美容室、サロン、クリニック、スクール、小売店など、口コミを集めたいさまざまな店舗・サービスでご利用いただけます。<br>
+									業種やサービス内容に合わせてアンケートを設定できるため、幅広い用途で活用できます。
+								</p>
+							</dd>
+						</dl>
+					</li>
+					<li>
+						<dl>
+							<dt>
+								<span class="que en">Q.</span>
+								<p class="title1">QRコードはどのように活用できますか？</p>
+								<div class="pulu">
+									<span></span>
+									<span></span>
+								</div>
+							</dt>
+							<dd>
+								<span class="ans en">A.</span>
+								<p class="text1">
+									発行したQRコードは、店頭POPやショップカード、チラシなどに掲載してご利用いただけます。<br>
+									会計時やサービス提供後など、お客様に口コミをお願いしやすいタイミングでご案内いただくのがおすすめです。
 								</p>
 							</dd>
 						</dl>
@@ -599,7 +684,8 @@
 							<dd>
 								<span class="ans en">A.</span>
 								<p class="text1">
-									テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+								スタンダードプランでは、口コミの件数に制限なくご利用いただけます。<br>
+								集まった口コミは管理画面から確認でき、店舗運営やサービス改善にも活用いただけます。
 								</p>
 							</dd>
 						</dl>
@@ -608,7 +694,7 @@
 						<dl>
 							<dt>
 								<span class="que en">Q.</span>
-								<p class="title1">契約解消後、管理画面の口コミはどうなりますか？</p>
+								<p class="title1">無料プランとスタンダードプランの違いは何ですか？</p>
 								<div class="pulu">
 									<span></span>
 									<span></span>
@@ -617,7 +703,8 @@
 							<dd>
 								<span class="ans en">A.</span>
 								<p class="text1">
-									テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+									無料プランでは、取り扱える口コミは5件までとなります。<br>
+									スタンダードプランでは口コミ件数の制限なくご利用いただけるため、継続的に口コミを集めたい店舗・サービスにおすすめです。
 								</p>
 							</dd>
 						</dl>
@@ -626,7 +713,7 @@
 						<dl>
 							<dt>
 								<span class="que en">Q.</span>
-								<p class="title1">解約した場合はいつからできますか？</p>
+								<p class="title1">解約はいつでもできますか？</p>
 								<div class="pulu">
 									<span></span>
 									<span></span>
@@ -635,7 +722,8 @@
 							<dd>
 								<span class="ans en">A.</span>
 								<p class="text1">
-									テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+									はい。いつでも解約していただけます。解約金はかかりません。<br>
+									有料プランを解約すると無料プランへ切り替わり、引き続きCoelをご利用いただけます。
 								</p>
 							</dd>
 						</dl>
@@ -723,10 +811,10 @@
 </div><!-- /#main -->
 
 
-<div class="side_bnr_area">
+<!-- <div class="side_bnr_area">
 	<div class="side_close_btn"><img src="{{ asset('lp/img/' ) }}/common/side_close.svg" alt="close"></div>
 	<a href="{{ url('/register') }}" class="side_bnr"><img src="{{ asset('lp/img/' ) }}/common/side_bnr.png" alt="ご協力いただいたご契約者様限定 利用料３ヶ月無料キャンペーン"></a>
 	<p class="text1">※定員に達し次第キャンペーン終了となります</p>
-</div>
+</div> -->
 
 @endsection
