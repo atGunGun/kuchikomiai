@@ -127,6 +127,34 @@
                 </div>
             </div>
 
+            {{-- Google Business Profile連携 --}}
+            @if($company->effectivePlanCode() === 'premium')
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 space-y-4 mt-8">
+                    <h2 class="text-lg font-bold text-gray-800 border-b pb-4">
+                        Google Business Profile連携
+                    </h2>
+
+                    <p class="text-sm text-gray-600">
+                        Google Business Profileと連携すると、Googleに投稿された口コミをCoelで確認できるようになります。
+                    </p>
+
+                    @if($company->google_refresh_token)
+                        <div class="bg-green-50 border border-green-200 rounded-xl p-4">
+                            <p class="text-sm font-bold text-green-700">
+                                ✓ Google Business Profileと連携済み
+                            </p>
+                        </div>
+                    @else
+                        <a
+                            href="{{ route('google-business.connect') }}"
+                            class="inline-block bg-[#0566F4] hover:bg-blue-700 text-white font-bold rounded-xl px-6 py-3 transition"
+                        >
+                            Google Business Profileと連携する
+                        </a>
+                    @endif
+                </div>
+            @endif
+
             {{-- AI口コミスタイル設定 --}}
             @if($company->effectivePlanCode() === 'premium')
                 <div class="pt-4">
