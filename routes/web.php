@@ -12,7 +12,7 @@ use App\Http\Controllers\CompanySurveyController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\AdminSurveyTemplateController;
 use App\Http\Controllers\ContactController;
-
+use App\Http\Controllers\GoogleBusinessController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +23,15 @@ use App\Http\Controllers\ContactController;
 // トップページ
 Route::get('/', [PublicNoticeController::class, 'top'])
     ->name('top');
+
+/*
+|--------------------------------------------------------------------------
+| Google Business Profile 連携
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/google-business/callback', [GoogleBusinessController::class, 'callback'])
+    ->name('google-business.callback');
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +89,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard/export-csv', [ReviewController::class, 'exportDashboardCsv'])
         ->name('dashboard.export-csv');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Google Business Profile
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/google-business/connect', [GoogleBusinessController::class, 'redirect'])
+        ->name('google-business.connect');
 
     /*
     |--------------------------------------------------------------------------

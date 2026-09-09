@@ -26,12 +26,20 @@ class Company extends Model
         'applied_price',
         'selected_survey_id',
         'google_map_url',
+        'google_business_account_id',
+        'google_business_location_id',
+        'google_access_token',
+        'google_refresh_token',
+        'google_token_expires_at',
         'stripe_customer_id',
         'stripe_subscription_id',
         'token'
     ];
     protected $casts = [
         'demo_expires_at' => 'datetime',
+        'google_access_token' => 'encrypted',
+        'google_refresh_token' => 'encrypted',
+        'google_token_expires_at' => 'datetime',
     ];
     public function user()
     {
